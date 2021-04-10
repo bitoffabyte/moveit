@@ -1,11 +1,11 @@
-import React from 'react';
-
-import WebRTC from './WebRTC';
-
 import './App.css';
 
-function App() {
-  return <WebRTC />;
+const App = () => {
+  return (
+    <div className="App">
+      <h1>move.it</h1>
+    </div>
+  );
 }
 
 export default App;
