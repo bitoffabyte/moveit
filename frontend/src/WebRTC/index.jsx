@@ -11,8 +11,8 @@ const WebRTC = () => {
     projectId: 'moveit-3ba0e',
     storageBucket: 'moveit-3ba0e.appspot.com',
     messagingSenderId: '721613026537',
-    appId: '1:721613026537:web:d68e6c2b1014e248512c78',
-    measurementId: 'G-S5PZ2CSVTY',
+    appId: '1:721613026537:web:465bf7d6fbf2373f512c78',
+    measurementId: 'G-Z8W8BFE0PD',
   };
 
   if (!firebase.apps.length) {
@@ -47,7 +47,7 @@ const WebRTC = () => {
       <div className="videos">
         <span>
           <h3>Local Stream</h3>
-          <video ref={webcamVideo} autoPlay playsInline />
+          <video ref={webcamVideo} autoPlay playsInline muted="muted" />
         </span>
         <span>
           <h3>Remote Stream</h3>
