@@ -35,116 +35,75 @@ const VideoCall = () => {
   const webcamButton = React.createRef();
   const webcamVideo = React.createRef();
   const callButton = React.createRef();
-  const callInput = React.createRef();
   const answerButton = React.createRef();
   const remoteVideo = React.createRef();
-  const hangupButton = React.createRef();
 
-  return (
-    <>
-      <h2>1. Start your Webcam</h2>
-      <div className="videos">
-        <span>
-          <h3>Local Stream</h3>
-          <video ref={webcamVideo} autoPlay playsInline muted="muted" />
-        </span>
-        <span>
-          <h3>Remote Stream</h3>
-          <video ref={remoteVideo} autoPlay playsInline />
-        </span>
-      </div>
+  React.useEffect(async () => {
+    localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    remoteStream = new MediaStream();
 
-      <button
-        ref={webcamButton}
-        type="button"
-        onClick={async () => {
-          localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-          remoteStream = new MediaStream();
+    // Push tracks from local stream to peer connection
+    localStream.getTracks().forEach((track) => {
+      pc.addTrack(track, localStream);
+    });
 
-          // Push tracks from local stream to peer connection
-          localStream.getTracks().forEach((track) => {
-            pc.addTrack(track, localStream);
-          });
+    // Pull tracks from remote stream, add to video stream
+    pc.ontrack = (event) => {
+      event.streams[0].getTracks().forEach((track) => {
+        remoteStream.addTrack(track);
+      });
+    };
 
-          // Pull tracks from remote stream, add to video stream
-          pc.ontrack = (event) => {
-            event.streams[0].getTracks().forEach((track) => {
-              remoteStream.addTrack(track);
-            });
-          };
+    webcamVideo.current.srcObject = localStream;
+    remoteVideo.current.srcObject = remoteStream;
 
-          webcamVideo.current.srcObject = localStream;
-          remoteVideo.current.srcObject = remoteStream;
-
-          callButton.current.disabled = false;
-          answerButton.current.disabled = false;
-          webcamButton.current.disabled = true;
-        }}
-      >
-        Start webcam
-      </button>
-      <h2>2. Create a new Call</h2>
-      <button
-        ref={callButton}
-        type="button"
-        onClick={async () => {
-          console.log('hi');
-          const callDoc = firestore.collection('calls').doc();
-          const offerCandidates = callDoc.collection('offerCandidates');
-          const answerCandidates = callDoc.collection('answerCandidates');
-
-          callInput.current.value = callDoc.id;
-          console.log(callDoc.id);
-
-          pc.onicecandidate = (event) => {
-            if (event.candidate) {
-              offerCandidates.add(event.candidate.toJSON());
-            }
-          };
-
-          const offerDescription = await pc.createOffer();
-          await pc.setLocalDescription(offerDescription);
-
-          const offer = {
-            sdp: offerDescription.sdp,
-            type: offerDescription.type,
-          };
-
-          await callDoc.set({ offer });
-
-          callDoc.onSnapshot((snapshot) => {
-            const data = snapshot.data();
-            if (!pc.currentRemoteDescription && data && data.answer) {
-              const answerDescription = new RTCSessionDescription(data.answer);
-              pc.setRemoteDescription(answerDescription);
+    // Check if we should create or join a call
+    firestore.collection('calls').get().then(async (querySnapshot) => {
+      // If there is no ongoing call, go ahead and create a new call.
+      if (querySnapshot.empty) {
+        const callDoc = firestore.collection('calls').doc();
+        const offerCandidates = callDoc.collection('offerCandidates');
+        const answerCandidates = callDoc.collection('answerCandidates');
+    
+        console.log(callDoc.id);
+    
+        pc.onicecandidate = (event) => {
+          if (event.candidate) {
+            offerCandidates.add(event.candidate.toJSON());
+          }
+        };
+    
+        const offerDescription = await pc.createOffer();
+        await pc.setLocalDescription(offerDescription);
+    
+        const offer = {
+          sdp: offerDescription.sdp,
+          type: offerDescription.type,
+        };
+    
+        await callDoc.set({ offer });
+    
+        callDoc.onSnapshot((snapshot) => {
+          const data = snapshot.data();
+          if (!pc.currentRemoteDescription && data && data.answer) {
+            const answerDescription = new RTCSessionDescription(data.answer);
+            pc.setRemoteDescription(answerDescription);
+          }
+        });
+    
+        answerCandidates.onSnapshot((snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            if (change.type === 'added') {
+              const candidate = new RTCIceCandidate(change.doc.data());
+              pc.addIceCandidate(candidate);
             }
           });
-
-          answerCandidates.onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === 'added') {
-                const candidate = new RTCIceCandidate(change.doc.data());
-                pc.addIceCandidate(candidate);
-              }
-            });
-          });
-
-          hangupButton.current.disabled = false;
-        }}
-      >
-        Create Call (offer)
-      </button>
-
-      <h2>3. Join a Call</h2>
-      <p>Answer the call from a different browser window or device</p>
-
-      <input ref={callInput} />
-      <button
-        ref={answerButton}
-        type="button"
-        onClick={async () => {
-          const callId = callInput.current.value;
-          const callDoc = firestore.collection('calls').doc(callId);
+        });
+      }
+      // If there is an ongoing call, go ahead and create a new call.
+      else {
+        querySnapshot.forEach(async (doc) => {
+          const callDoc = firestore.collection('calls').doc(doc.id);
           const answerCandidates = callDoc.collection('answerCandidates');
           const offerCandidates = callDoc.collection('offerCandidates');
 
@@ -177,16 +136,24 @@ const VideoCall = () => {
               }
             });
           });
-        }}
-      >
-        Answer
-      </button>
+          callDoc.delete();
+        });
+      }
+    });
+  }, []);
 
-      <h2>4. Hangup</h2>
-
-      <button ref={hangupButton} type="button" disabled>
-        Hangup
-      </button>
+  return (
+    <>
+      <div className="videos">
+        <span>
+          <h3>Local Stream</h3>
+          <video ref={webcamVideo} autoPlay playsInline muted="muted" />
+        </span>
+        <span>
+          <h3>Remote Stream</h3>
+          <video ref={remoteVideo} autoPlay playsInline />
+        </span>
+      </div>
     </>
   );
 };

@@ -1,8 +1,10 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 
 import './style.css';
 
 const SessionCard = ({sessionName, sessionDuration, instructorName, startDate, startTime, prerecorded, starting, image, color}) => {
+    const history = useHistory();
     return (
     <div className={`session-card ${color}`}>
         <img src={image} alt={sessionName} className="background" />
@@ -16,7 +18,12 @@ const SessionCard = ({sessionName, sessionDuration, instructorName, startDate, s
             {prerecorded
                 ? (<button className="button">Watch</button>)
                 : (starting
-                    ? (<><button className="button">Join Now</button><button className="button">Re-book</button></>)
+                    ? (<><button className="button"
+                    onClick={() => {
+                        // I think this needs to be a button and not a link to count as an interaction
+                        history.push("/workout");
+                    }}
+                    >Join Now</button><button className="button">Re-book</button></>)
                     : (<><button className="button">Re-book</button><button className="button">Cancel</button></>)
             )}
         </div>
