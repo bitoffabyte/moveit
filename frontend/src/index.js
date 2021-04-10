@@ -1,11 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+
+import HomePage from 'pages/HomePage';
+import LandingPage from 'pages/LandingPage';
+import WorkoutPage from 'pages/WorkoutPage';
+import 'index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Switch>
+        <Route path="/workout">
+          <WorkoutPage />
+        </Route>
+        <Route path="/home">
+          <HomePage />
+        </Route>
+        <Route path="/">
+          <LandingPage />
+        </Route>
+      </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
