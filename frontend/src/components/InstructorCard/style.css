@@ -1,0 +1,87 @@
+.instructor-card {
+    width: 87px;
+    height: 122px;
+    border-radius: 6.5px;
+    padding: 8px 8px;
+    position: relative;
+    margin-right: 20px;
+
+    /* Default color */
+    background: #FF54CF;
+    background: linear-gradient(0deg, #FF54CF 20%, #FFFFFF00 200%);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.instructor-card.pink {
+    background: #FF54CF;
+    background: linear-gradient(0deg, #FF54CF 20%, #FFFFFF00 200%);
+}
+
+.instructor-card.purple {
+    background: #A04EF2;
+    background: linear-gradient(0deg, #A04EF2 20%, #FFFFFF00 200%);
+}
+
+.instructor-card.blue {
+    background: #2D58F3;
+    background: linear-gradient(0deg, #2D58F3 20%, #FFFFFF00 200%);
+}
+
+.instructor-card.green {
+    background: #0DA75D;
+    background: linear-gradient(0deg, #0DA75D 20%, #FFFFFF00 200%);
+}
+
+p {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+.instructor-card .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+.instructor-card .info {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+.instructor-card .name {
+    font-weight: 600;
+    text-align: left;
+}
+
+.instructor-card .description {
+    font-weight: 300;
+    text-align: left;
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.instructor-card .button {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 8.5px;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    background: none;
+    height: 20px;
+    width: 70px;
+    padding: 0px 8px;
+    cursor: pointer;
+    margin-top: 4px;
+}

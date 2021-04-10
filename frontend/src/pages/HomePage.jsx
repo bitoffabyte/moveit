@@ -1,14 +1,9 @@
-import SessionCard from 'components/SessionCard';
+import React from 'react';
 
-const HomePage  = () => { 
-  return (
-    <div>
-      <SessionCard
-      sessionName="Interval Training"
-      instructorName="Daniel Truong"  
-      starting={true}
-    /></div>
-  )
+import Home from '../components/Home';
+
+const HomePage  = () => {
+  return <Home />;
 }
-//sessionName, sessionDuration, instructorName, startDate, startTime, prerecorded, starting, image, color
-export default HomePage
+
+export default HomePage;
