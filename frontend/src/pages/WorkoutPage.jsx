@@ -1,6 +1,8 @@
+import VideoCall from 'components/VideoCall';
+
 const WorkoutPage  = () => { 
   return (
-    <div>workout page</div>
+    <VideoCall />
   )
 }
 

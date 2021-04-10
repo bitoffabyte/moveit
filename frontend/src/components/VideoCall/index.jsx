@@ -2,10 +2,18 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import firebaseConfig from '../firebase-config';
 import './style.css';
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSENGER_SENDER,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
+};
 
-const WebRTC = () => {
+const VideoCall = () => {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
@@ -79,13 +87,14 @@ const WebRTC = () => {
       <button
         ref={callButton}
         type="button"
-        disabled
         onClick={async () => {
+          console.log('hi');
           const callDoc = firestore.collection('calls').doc();
           const offerCandidates = callDoc.collection('offerCandidates');
           const answerCandidates = callDoc.collection('answerCandidates');
 
           callInput.current.value = callDoc.id;
+          console.log(callDoc.id);
 
           pc.onicecandidate = (event) => {
             if (event.candidate) {
@@ -133,7 +142,6 @@ const WebRTC = () => {
       <button
         ref={answerButton}
         type="button"
-        disabled
         onClick={async () => {
           const callId = callInput.current.value;
           const callDoc = firestore.collection('calls').doc(callId);
@@ -183,4 +191,4 @@ const WebRTC = () => {
   );
 };
 
-export default WebRTC;
+export default VideoCall;
