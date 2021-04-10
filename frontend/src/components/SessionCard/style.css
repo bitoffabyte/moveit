@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+.session-card {
+    width: 160px;
+    height: 108px;
+    border-radius: 6.5px;
+    padding: 10px 8px;
+    position: relative;
+    margin-right: 20px;
+
+    /* Default color */
+    background: #ff8686;
+    background: linear-gradient(90deg, #FF8686 30%, #FFFFFF00 200%);
+}
+
+.session-card.orange {
+    background: #ff8686;
+    background: linear-gradient(90deg, #FF8686 30%, #FFFFFF00 200%);
+}
+
+.session-card.pink {
+    background: #FF80DB;
+    background: linear-gradient(90deg, #FF80DB 30%, #FFFFFF00 200%);
+}
+
+.session-card.blue {
+    background: #7FD4F1;
+    background: linear-gradient(90deg, #7FD4F1 30%, #FFFFFF00 200%);
+}
+
+p {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+
+.session-card .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+.session-card .name {
+    font-weight: 600;
+    font-size: 15px;
+    text-align: left;
+    margin: 0;
+}
+
+.session-card .duration {
+    font-weight: 300;
+    text-align: left;
+    margin-top: 4px;
+}
+
+.session-card .info-flex {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.session-card .instructor {
+    font-weight: 300;
+    text-align: left;
+    margin: 0;
+}
+
+.session-card .instructor .instructor-title {
+    font-weight: 500;
+}
+
+.session-card .time {
+    font-weight: 600;
+    text-align: right;
+}
+
+.session-card .buttons {
+    display: flex;
+    justify-content: left;
+}
+
+.session-card .button {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 8.5px;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 5px;
+    background: none;
+    height: 20px;
+    padding: 0px 8px;
+    cursor: pointer;
+
+    margin-top: 12px;
+    margin-right: 8px;
+}
