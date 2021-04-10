@@ -1,85 +1,11 @@
-import * as posenet from '@tensorflow-models/posenet'
-
-const pointRadius = 3
-
-export const config = {
-  videoWidth: 900,
-  videoHeight: 700,
-  flipHorizontal: true,
-  algorithm: 'single-pose',
-  showVideo: true,
-  showSkeleton: true,
-  showPoints: true,
-  minPoseConfidence: 0.1,
-  minPartConfidence: 0.5,
-  maxPoseDetections: 2,
-  nmsRadius: 20,
-  outputStride: 16,
-  imageScaleFactor: 0.5,
-  skeletonColor: '#ffadea',
-  skeletonLineWidth: 6,
-  loadingText: 'Loading...please be patient...'
+export const angle = (P1, P2, P3) => {
+  const a = Math.sqrt((P1.x - P2.x)**2 + (P1.y - P2.y)**2);
+  const b = Math.sqrt((P3.x - P2.x)**2 + (P3.y - P2.y)**2);
+  const c = Math.sqrt((P1.x - P3.x)**2 + (P1.y - P3.y)**2);
+  const ang = Math.acos((a**2 +b**2-c**2)/(2*a*b));
+  const deg = ang/(Math.PI / 180);
+  return deg;
 }
 
-function toTuple({x, y}) {
-  return [x, y]
-}
-
-export function drawKeyPoints(
-  keypoints,
-  minConfidence,
-  skeletonColor,
-  canvasContext,
-  scale = 1
-) {
-  keypoints.forEach(keypoint => {
-    if (keypoint.score >= minConfidence) {
-      const {x, y} = keypoint.position
-      canvasContext.beginPath()
-      canvasContext.arc(x * scale, y * scale, pointRadius, 0, 2 * Math.PI)
-      canvasContext.fillStyle = skeletonColor
-      canvasContext.fill()
-    }
-  })
-}
-
-function drawSegment(
-  [firstX, firstY],
-  [nextX, nextY],
-  color,
-  lineWidth,
-  scale,
-  canvasContext
-) {
-  canvasContext.beginPath()
-  canvasContext.moveTo(firstX * scale, firstY * scale)
-  canvasContext.lineTo(nextX * scale, nextY * scale)
-  canvasContext.lineWidth = lineWidth
-  canvasContext.strokeStyle = color
-  canvasContext.stroke()
-}
-
-export function drawSkeleton(
-  keypoints,
-  minConfidence,
-  color,
-  lineWidth,
-  canvasContext,
-  scale = 1
-) {
-  const adjacentKeyPoints = posenet.getAdjacentKeyPoints(
-    keypoints,
-    minConfidence
-  )
-
-  adjacentKeyPoints.forEach(keypoints => {
-    drawSegment(
-      toTuple(keypoints[0].position),
-      toTuple(keypoints[1].position),
-      color,
-      lineWidth,
-      scale,
-      canvasContext
-    )
-  })
-}
+export const checkSquatStanding = (angle) => angle > 65 && angle < 100;
+export const checkSquatDown = (angle) => angle > 140;

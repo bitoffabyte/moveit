@@ -1,14 +1,44 @@
-import React, { useEffect, useRef, useState } from 'react'; 
+import React, { useRef, useState } from 'react'; 
+import { angle, checkSquatDown, checkSquatStanding } from './utils';
 
 import ml5 from 'ml5';
 import Sketch from 'react-p5';
 
-const minPoseConfidence = 0.2;
-
+const minPoseConfidence = 0.2
 
 const PoseEstimation = () => {
     const videoRef = useRef(); 
     const [poses, setPoses] = useState([]);    
+
+    const [leftThighAngle, setLeftThighAngle] = useState(0);
+    const [rightThighAngle, setRightThighAngle] = useState(0);
+
+    const [squatsCount, setSquatsCount] = useState(0);
+
+    // "", "up", "down"
+    const [squatsState, setSquatsState] = useState("");
+
+    const squatDetection = (squatCoords) => {
+        // look for squats (leftKnee --> leftHip, rightKnee --> rightHip, leftHip --> rightHip)
+        if (Object.keys(squatCoords).length !== 4) {
+            return
+        }
+
+        // Squat state: standing --> squat = 1 squat
+        const leftAngle = angle(squatCoords["leftKnee"], squatCoords["leftHip"], squatCoords["rightHip"]);
+        const rightAngle = angle(squatCoords["rightKnee"], squatCoords["rightHip"], squatCoords["leftHip"]);
+
+        setLeftThighAngle(leftAngle);
+        setRightThighAngle(rightAngle);
+
+        if ((squatsState === "" || squatsState === "down") && checkSquatStanding(leftAngle) && checkSquatStanding(rightAngle)) {
+            setSquatsState("up");
+        } else if (squatsState === "up" && checkSquatDown(leftAngle) && checkSquatDown(rightAngle)) {
+            setSquatsState("down");
+            setSquatsCount(squatsCount + 1);
+        }
+    }
+
 
     const setup = (p5, canvasParentRef) => {
 		// use parent to render the canvas in this ref
@@ -29,11 +59,15 @@ const PoseEstimation = () => {
 
         poseNet.on("pose", (results) => {
             setPoses(results);
+
+            // squatDetection(results);
         });
 	};
 
 	const draw = (p5) => {
         p5.image(videoRef.current, 0, 0, 640, 480)
+
+        const squatCoords = {} 
 
         // draws keypoints
         for (let i = 0; i < poses.length; i++) {
@@ -47,7 +81,12 @@ const PoseEstimation = () => {
                     p5.fill(255, 0, 0);
                     p5.noStroke();
                     p5.ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
+
+                    if (keypoint.part === "leftKnee" || keypoint.part === "leftHip" || keypoint.part === "rightKnee" || keypoint.part === "rightHip") {
+                        squatCoords[keypoint.part] = keypoint.position;
+                    }
                 }
+
             }
         }
 
@@ -62,11 +101,17 @@ const PoseEstimation = () => {
                 p5.line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
             }
         }
+
+        squatDetection(squatCoords);
 	};
 
     return (
         <div>
             <Sketch setup={setup} draw={draw} />;
+            <p>Left Thigh Angle: {leftThighAngle}</p>
+            <p>Right Thigh Angle: {rightThighAngle}</p>
+            <p>Number of Squats: {squatsCount}</p>
+            <p>Squats State: {squatsState}</p>
         </div>
     )
 }
