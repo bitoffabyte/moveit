@@ -1,8 +1,10 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import PoseEstimation from './PoseEstimation';
 
 import './style.css';
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -32,10 +34,7 @@ const VideoCall = () => {
   let localStream = null;
   let remoteStream = null;
 
-  const webcamButton = React.createRef();
   const webcamVideo = React.createRef();
-  const callButton = React.createRef();
-  const answerButton = React.createRef();
   const remoteVideo = React.createRef();
 
   React.useEffect(async () => {
@@ -54,7 +53,6 @@ const VideoCall = () => {
       });
     };
 
-    webcamVideo.current.srcObject = localStream;
     remoteVideo.current.srcObject = remoteStream;
 
     // Check if we should create or join a call
@@ -147,7 +145,7 @@ const VideoCall = () => {
       <div className="videos">
         <span>
           <h3>Local Stream</h3>
-          <video ref={webcamVideo} autoPlay playsInline muted="muted" />
+          <PoseEstimation />
         </span>
         <span>
           <h3>Remote Stream</h3>
