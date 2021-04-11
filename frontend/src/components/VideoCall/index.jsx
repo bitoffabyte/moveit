@@ -214,17 +214,17 @@ const VideoCall = (props) => {
         if (data > 74 ) {
           setBorderStyle(style => 'linear-gradient(180deg, #23FF53 0%, #03BFFF 100%)');
           setTimeout(() => {
-            setBorderStyle(style => 'linear-gradient(180deg, #23FF53 0%, #03BFFF 0%)');
+            setBorderStyle(style => 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 0%)');
           }, 3000);
         } else if (data > 49 ) {
           setBorderStyle(style => 'linear-gradient(180deg, #7A4CFD 0%, #FF4752 100%)');
           setTimeout(() => {
-            setBorderStyle(style => 'linear-gradient(180deg, #23FF53 0%, #03BFFF 0%)');
+            setBorderStyle(style => 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 0%)');
           }, 3000);
         } else {
           setBorderStyle(style => 'linear-gradient(180deg, #FF2323 0%, #FFA959 100%)');
           setTimeout(() => {
-            setBorderStyle(style => 'linear-gradient(180deg, #23FF53 0%, #03BFFF 0%)');
+            setBorderStyle(style => 'linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 0%)');
           }, 3000);
         }
 
