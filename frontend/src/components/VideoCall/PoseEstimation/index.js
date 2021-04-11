@@ -4,18 +4,18 @@ import { angle, checkCurlActive, checkCurlRest, checkSquatDown, checkSquatStandi
 import ml5 from 'ml5';
 import Sketch from 'react-p5';
 
-const minPoseConfidence = 0.1;
+const minPoseConfidence = 0.2;
 
 const canvasWidth = window.innerHeight * 1.11;
 const canvasHeight = window.innerHeight * 0.83;
 
-const durationThreshold = 100;
+const durationThreshold = 150;
+let lastKeypoints = {};
 
 const squatJoints = ["leftKnee", "leftHip", "rightHip", "rightKnee"];
 const curlJoints = ["leftShoulder", "leftElbow", "rightShoulder", "rightElbow", "leftWrist", "rightWrist"];
-// const jjJoints = ["leftShoulder", "leftElbow", "rightShoulder", "rightElbow"];
 
-const PoseEstimation = () => {
+const PoseEstimation = (props) => {
     const videoRef = useRef(); 
     const [poses, setPoses] = useState([]);    
 
@@ -27,6 +27,7 @@ const PoseEstimation = () => {
 
     // "", "rest", "curl"
     const [curlsState, setCurlsState] = useState("");
+
 
     const [leftSquatAngle, setleftSquatAngle] = useState(0);
     const [rightSquatAngle, setrightSquatAngle] = useState(0);
@@ -54,10 +55,14 @@ const PoseEstimation = () => {
         
         if (squatsState === "down" && (checkSquatStanding(left) && checkSquatStanding(right))) {
             setSquatsState("up");
-            setCurrentExercise("resting");
         } else if (squatsState === "up" && (checkSquatDown(left) && checkSquatDown(right))) {
             setSquatsState("down");
             setSquatsCount(squatsCount + 1);
+            const data = {
+                roomId: props.roomId,
+                keypoints: lastKeypoints
+            };
+            props.socket.emit('sendKeypoints', data);
 
             setCurrentExercise("squat");
             return true; 
@@ -66,7 +71,6 @@ const PoseEstimation = () => {
         return false;
     }
 
-    // TODO: fix all the false positives
     const curlsDetection = (curlCoords) => {
         // User will be sideways when doing curls. We should expect to see at least one side.
         const leftShoulderCoord = curlCoords["leftShoulder"],
@@ -76,6 +80,9 @@ const PoseEstimation = () => {
               leftWristCoord = curlCoords["leftWrist"],
               rightWristCoord = curlCoords["rightWrist"];
 
+        // if (leftShoulderCoord && rightShoulderCoord) {
+        //     console.log("shoulder distance: ", Math.abs(rightShoulderCoord.position.x - leftShoulderCoord.position.x));
+        // }
               
         if (!((leftShoulderCoord && leftElbowCoord && leftWristCoord) || (rightShoulderCoord && rightElbowCoord && rightWristCoord))) {
             // only reset if currently on resting position 
@@ -111,8 +118,13 @@ const PoseEstimation = () => {
         } else if (curlsState === "rest" && checkCurlActive(curlAngle)) {
             setCurlsState("curl");
             setCurlsCount(curlsCount + 1);
+            const data = {
+                roomId: props.roomId,
+                keypoints: lastKeypoints
+            };
+            props.socket.emit('sendKeypoints', data);
 
-            setCurrentExercise("curl")
+            setCurrentExercise("curl");
             return true; 
         }
         return false;
@@ -150,7 +162,10 @@ const PoseEstimation = () => {
 
         // draws keypoints
         for (let i = 0; i < poses.length; i++) {
-            const pose = poses[i].pose; 
+            const pose = poses[i].pose;
+            if (i == 0) {
+                lastKeypoints = pose.keypoints;
+            }
 
             for (let j = 0; j < pose.keypoints.length; j += 1) {
                 // A keypoint is an object describing a body part (like rightArm or leftShoulder)
@@ -192,24 +207,20 @@ const PoseEstimation = () => {
             }
         }
 
-        const standingStatus = isStanding(allKeypoints);
-
-        // squats detection
-        if (standingStatus || currentExercise === "squat") {
-            const isSquat = squatDetection(squatCoords);
-            if (isSquat) {
-                setCurrentExerciseDuration(0);
-                return;
-            } else {
-                setCurrentExerciseDuration(currentExerciseDuration + 1);
-                if (currentExerciseDuration > durationThreshold) {
-                    setCurrentExercise("resting");
+        if (isStanding(allKeypoints)) {
+                const isSquat = squatDetection(squatCoords);
+                if (isSquat) {
+                    setCurrentExerciseDuration(0);
+                    return;
+                } else {
+                    setCurrentExerciseDuration(currentExerciseDuration + 1);
+                    if (currentExerciseDuration > durationThreshold) {
+                        setCurrentExercise("resting");
+                    }
                 }
-            }
         }
 
-        // curl detection
-        if (!standingStatus && currentExercise !== "squat") {
+        if (isSitting(allKeypoints)) {
             const isCurl = curlsDetection(curlCoords);
             if (isCurl) {
                 setCurrentExerciseDuration(0);
@@ -240,4 +251,4 @@ const PoseEstimation = () => {
     )
 }
 
-export default PoseEstimation; 
+export default PoseEstimation;

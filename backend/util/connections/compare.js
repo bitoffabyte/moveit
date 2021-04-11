@@ -1,4 +1,14 @@
 const keypointData = {};
+const similarity = require('compute-cosine-similarity');
+
+// Cosine similarity as a distance function. The lower the number, the closer // the match
+// poseVector1 and poseVector2 are a L2 normalized 34-float vectors (17 keypoints each  
+// with an x and y. 17 * 2 = 34)
+function cosineDistanceMatching(poseVector1, poseVector2) {
+  let cosineSimilarity = similarity(poseVector1, poseVector2);
+  let distance = 2 * (1 - cosineSimilarity);
+  return Math.sqrt(distance);
+}
 
 module.exports = async (io, client) => {
   // Create room between two users
@@ -43,7 +53,23 @@ module.exports = async (io, client) => {
         const keypoint2 = keypoints[1].keypoints;
 
         // TODO: Compare keypoints1 and keypoints2 to generate a score
-        let confidenceScore = 0;
+        confidenceScore = 0;
+
+        const poseVector1 = [];
+        const poseVector2 = []; 
+
+        for (let part of keypoint1) {
+          poseVector1.push(part.position.x)
+          poseVector1.push(part.position.y)
+        }
+
+        for (let part of keypoint2) {
+          poseVector2.push(part.position.x)
+          poseVector2.push(part.position.y)
+        }
+
+        confidenceScore = cosineDistanceMatching(poseVector1, poseVector2);
+        console.log("confidence: ", confidenceScore);
 
         client.to(data.roomId).emit('confidenceScore', confidenceScore);
       }
