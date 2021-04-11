@@ -1,0 +1,105 @@
+.Landing {
+  @font-face {
+    font-family: Monument;
+    src: url('../../assets/MonumentExtended-Regular.otf');
+  }
+
+  .button-row {
+      display: flex;
+      align-items: center;
+      .demo {
+          margin-top: 48px;
+          background-color: white;
+          width: 200px;
+          height: 50px;
+          border: 1px solid black;
+          border-radius: 10px;
+          font-family: 'Montserrat';
+          font-size: 18px;
+          font-weight: 500;
+          outline:none;
+      }
+      .demo:hover {
+          background: black;
+          color: white;
+          transition: 0.5s;
+          cursor: pointer;
+      }
+
+      h2 {
+          font-family: 'Montserrat';
+          font-size: 18px;
+          font-weight: 500;
+          margin-top: 64px;
+          margin-left: 32px;
+      }
+      h2:hover {
+          cursor:pointer;
+      }
+  }
+
+  .text {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0px 40px;
+    h1 {
+      line-height: 0px;
+      font-size: 90px;
+      margin: 40px 0px;
+    }
+
+    .fit {
+      margin-top: 12px;
+      p {
+        color: black;
+        font-size: 28px;
+        font-weight: 300;
+      }
+    }
+
+    .outlined {
+      font-family: Monument;
+      color: white;
+      -webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: black;
+    }
+    .outlined:hover {
+      color: black;
+      transition: 0.5s;
+    }
+    .filled {
+      font-family: Monument;
+      color: black;
+    }
+    .filled:hover {
+      color: white;
+      -webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: black;
+      transition: 0.5s;
+    }
+  }
+
+  .rect {
+    position: absolute;
+    right: 0;
+    height: 100vh;
+    top: 0;
+    z-index: -1;
+  }
+
+  .person {
+    position: absolute;
+    height: 80%;
+    right: 2%;
+    top: 8%;
+  }
+
+  .logo {
+    position: absolute;
+    top: 2%;
+    left: 40px;
+    height: 40px;
+  }
+}

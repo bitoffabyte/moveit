@@ -1,7 +1,7 @@
-const LandingPage  = () => { 
-  return (
-    <div>landing page</div>
-  )
-}
+import Landing from '../components/Landing';
 
-export default LandingPage
+const LandingPage = () => {
+  return <Landing />;
+};
+
+export default LandingPage;
