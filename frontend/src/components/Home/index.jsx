@@ -18,88 +18,101 @@ import DrYash from '../../assets/dryash.png';
 
 import WatchCatalog from '../../assets/watchcatalog.png';
 import Instructor from '../../assets/instructor.png';
+import Instructor2 from '../../assets/instructor2.png';
+import Instructor3 from '../../assets/instructor3.png';
+import Instructor4 from '../../assets/instructor4.png';
+import Instructor5 from '../../assets/instructor5.png';
 
-import './style.css';
+import './style.scss';
 
-const Home  = () => {
-  const upcomingSessions = [{
-    sessionName: "Interval Training",
-    sessionDuration: 120,
-    instructorName: "Sarah Lee",
-    startDate: "",
-    starTime: "",
-    prerecorded: false,
-    starting: true,
-    image: SarahLee,
-    color: "orange"
-  },
-  {
-    sessionName: "Meditation",
-    sessionDuration: 45,
-    instructorName: "Dr. Yash",
-    startDate: "Thursday",
-    startTime: "4:30PM",
-    prerecorded: false,
-    starting: false,
-    image: DrYash,
-    color: "pink"
-  }];
+const Home = () => {
+  const upcomingSessions = [
+    {
+      sessionName: 'Interval Training',
+      sessionDuration: 120,
+      instructorName: 'Sarah Lee',
+      startDate: '',
+      starTime: '',
+      prerecorded: false,
+      starting: true,
+      image: SarahLee,
+      color: 'orange',
+    },
+    {
+      sessionName: 'Meditation',
+      sessionDuration: 45,
+      instructorName: 'Dr. Yash',
+      startDate: 'Thursday',
+      startTime: '4:30PM',
+      prerecorded: false,
+      starting: false,
+      image: DrYash,
+      color: 'pink',
+    },
+  ];
 
-  const recordedSessions = [{
-    sessionName: "Interval Training",
-    sessionDuration: 120,
-    instructorName: "Sarah Lee",
-    startDate: "4/01",
-    startTime: "2:00PM",
-    prerecorded: false,
-    starting: false,
-    image: SarahLee,
-    color: "blue"
-  },
-  {
-    sessionName: "Meditation",
-    sessionDuration: 45,
-    instructorName: "Dr. Yash",
-    startDate: "3/12",
-    startTime: "2:30pm",
-    prerecorded: false,
-    starting: false,
-    image: DrYash,
-    color: "pink"
-  },
-  {
-    sessionName: "Meditation",
-    sessionDuration: 45,
-    instructorName: "Dr. Yash",
-    startDate: "3/12",
-    startTime: "2:30pm",
-    prerecorded: false,
-    starting: false,
-    image: DrYash,
-    color: "pink"
-  }];
+  const recordedSessions = [
+    {
+      sessionName: 'Interval Training',
+      sessionDuration: 120,
+      instructorName: 'Sarah Lee',
+      startDate: '4/01',
+      startTime: '2:00PM',
+      prerecorded: false,
+      starting: false,
+      image: SarahLee,
+      color: 'blue',
+    },
+    {
+      sessionName: 'Kung Fu',
+      sessionDuration: 45,
+      instructorName: 'Mr. Lee',
+      startDate: '3/12',
+      startTime: '2:30pm',
+      prerecorded: false,
+      starting: false,
+      image: Instructor5,
+      color: 'red',
+    },
+    {
+      sessionName: 'Meditation',
+      sessionDuration: 45,
+      instructorName: 'Dr. Yash',
+      startDate: '3/12',
+      startTime: '2:30pm',
+      prerecorded: false,
+      starting: false,
+      image: DrYash,
+      color: 'pink',
+    },
+  ];
 
-  const instructors = [{
-    name: 'Jane Smith',
-    description: 'Physical Trainer',
-    image: Instructor,
-    color: "pink"
-  },{
-    name: 'Jane Smith',
-    description: 'Physical Trainer',
-    image: Instructor,
-    color: "purple"
-  },{
-    name: 'Jane Smith',
-    description: 'Physical Trainer',
-    image: Instructor,
-    color: "blue"
-  },{
-    name: 'Jane Smith',
-    description: 'Physical Trainer',
-    image: Instructor,
-    color: "green"
-  }]
+  const instructors = [
+    {
+      name: 'Jane Smith',
+      description: 'Physical Trainer',
+      image: Instructor,
+      color: 'pink',
+    },
+    {
+      name: 'Kamile Tillman',
+      description: 'Physical Trainer',
+      image: Instructor2,
+      color: 'purple',
+    },
+    {
+      name: 'Sammy Turnbull',
+      description: 'Yoga Instructor',
+      image: Instructor3,
+      color: 'blue',
+    },
+    {
+      name: 'Jane Smith',
+      description: 'Yoga Instructor',
+      image: Instructor4,
+      color: 'green',
+    },
+  ];
 
   return (
     <div className="home">
@@ -109,11 +122,17 @@ const Home  = () => {
         </a>
         <div className="right">
           <div>
-            <a href="/instructors" className="link">Instructors</a>
-            <a href="/profile" className="link">Profile</a>
-            <a href="/settings" className="link">Settings</a>
+            <a href="/instructors" className="link">
+              Instructors
+            </a>
+            <a href="/profile" className="link">
+              Profile
+            </a>
+            <a href="/settings" className="link">
+              Settings
+            </a>
           </div>
-          <img src={Profile} alt="Profile" className="profile"/>
+          <img src={Profile} alt="Profile" className="profile" />
         </div>
       </div>
       <div className="content">
@@ -127,20 +146,34 @@ const Home  = () => {
                   <p className="count">232</p>
                   <div className="indicator" />
                 </div>
-                <p className="title">Instructors<br />Online</p>
+                <p className="title">
+                  Instructors
+                  <br />
+                  Online
+                </p>
               </div>
               <div className="statistics">
                 <div className="workout">
                   <p className="title">Workout Score</p>
-                  <p className="description">Based off lifetime instructor comparisons</p>
+                  <p className="description">
+                    Based off lifetime instructor comparisons
+                  </p>
                   <div className="scores">
                     <div className="lifetime">
                       <p className="score">79</p>
-                      <p className="title">Lifetime<br />Score</p>
+                      <p className="title">
+                        Lifetime
+                        <br />
+                        Score
+                      </p>
                     </div>
                     <div className="last">
                       <p className="score">83</p>
-                      <p className="title">Score<br />Last Workout</p>
+                      <p className="title">
+                        Score
+                        <br />
+                        Last Workout
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -151,43 +184,56 @@ const Home  = () => {
                     <p className="time">23h 12m</p>
                   </div>
                   <div className="areas">
-                  <p className="title">Suggested Areas</p>
-                  <p className="description">Based on previous workouts</p>
-                  <div className="items">
-                    <div className="item">
-                      <img src={Biceps} alt="Biceps" />
-                      <div>
-                        <p className="rank">#1</p>
-                        <p className="name">Biceps</p>
+                    <p className="title">Suggested Areas</p>
+                    <p className="description">Based on previous workouts</p>
+                    <div className="items">
+                      <div className="item">
+                        <img src={Biceps} alt="Biceps" />
+                        <div>
+                          <p className="rank">#1</p>
+                          <p className="name">Biceps</p>
+                        </div>
+                      </div>
+                      <div className="item">
+                        <img src={Legs} alt="Legs" />
+                        <div>
+                          <p className="rank">#2</p>
+                          <p className="name">Legs</p>
+                        </div>
+                      </div>
+                      <div className="item">
+                        <img src={Shoulders} alt="Shoulders" />
+                        <div>
+                          <p className="rank">#3</p>
+                          <p className="name">Shoulders</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="item">
-                      <img src={Legs} alt="Legs" />
-                      <div>
-                        <p className="rank">#2</p>
-                        <p className="name">Legs</p>
-                      </div>
-                    </div>
-                    <div className="item">
-                      <img src={Shoulders} alt="Shoulders" />
-                      <div>
-                        <p className="rank">#3</p>
-                        <p className="name">Shoulders</p>
-                      </div>
-                    </div>
-                  </div>
                   </div>
                 </div>
                 <div className="calendar">
                   <p className="title">Your Calendar</p>
                   <FullCalendar
-                    plugins={[ dayGridPlugin ]}
-                    initialView="dayGridWeek"
-                    weekends={false}
+                    plugins={[dayGridPlugin]}
                     events={[
                       { title: 'Int. Train', date: '2021-04-05' },
                       { title: 'Meditation', date: '2021-04-07' },
-                      { title: 'Int. Train', date: '2021-04-09' }
+                      {
+                        title: 'Yoga',
+                        start: '2021-04-07T10:30:00',
+                        end: '2021-04-07T11:30:00',
+                      },
+                      { title: 'Int. Train', date: '2021-04-09' },
+                      {
+                        title: 'Cat Therapy',
+                        start: '2021-04-12T10:30:00',
+                        end: '2021-04-12T11:30:00',
+                      },
+                      {
+                        title: 'Dog Therapy',
+                        start: '2021-04-12T11:30:00',
+                        end: '2021-04-12T11:30:00',
+                      }
                     ]}
                   />
                 </div>
@@ -199,33 +245,33 @@ const Home  = () => {
           <div className="sessions">
             <p className="title">Your Upcoming Sessions</p>
             <div className="container">
-              <img src={BookInstructors} alt="" className="starter"/>
+              <img src={BookInstructors} alt="" className="starter" />
               {upcomingSessions.map((session) => (
-                <SessionCard {...session}/>
+                <SessionCard {...session} />
               ))}
             </div>
           </div>
           <div className="sessions">
             <p className="title">Pre-Recorded Sessions</p>
             <div className="container">
-              <img src={WatchCatalog} alt="" className="starter"/>
+              <img src={WatchCatalog} alt="" className="starter" />
               {recordedSessions.map((session) => (
-                <SessionCard {...session}/>
+                <SessionCard {...session} />
               ))}
             </div>
           </div>
           <div className="sessions">
             <p className="title">Book Instructors</p>
             <div className="container">
-            {instructors.map((instructor) => (
-                <InstructorCard {...instructor}/>
+              {instructors.map((instructor) => (
+                <InstructorCard {...instructor} />
               ))}
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default Home;

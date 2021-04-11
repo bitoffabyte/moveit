@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
 
-import './style.css';
+import './style.scss';
 
 const SessionCard = ({sessionName, sessionDuration, instructorName, startDate, startTime, prerecorded, starting, image, color}) => {
     const history = useHistory();
@@ -24,7 +24,7 @@ const SessionCard = ({sessionName, sessionDuration, instructorName, startDate, s
                         history.push("/workout");
                     }}
                     >Join Now</button><button className="button">Re-book</button></>)
-                    : (<><button className="button">Re-book</button><button className="button">Cancel</button></>)
+                    : (<><button className="button">Watch</button><button className="button">Cancel</button></>)
             )}
         </div>
     </div>

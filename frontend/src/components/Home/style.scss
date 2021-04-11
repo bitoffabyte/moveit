@@ -1,342 +1,349 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-
-.header {
+.home {
+  .header {
     height: 55px;
-    background-color: #FFFFFF;
-    border-bottom: #DFDFDF 1px solid;
+    background-color: #ffffff;
+    border-bottom: #dfdfdf 1px solid;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 48px;
-}
+  }
 
-.header .logo {
+  .header .logo {
     width: 135px;
     height: 31px;
-}
+  }
 
-.header .right {
+  .header .right {
     display: flex;
     align-items: center;
-}
+  }
 
-.header .link {
+  .header .link {
     font-family: 'Montserrat', sans-serif;
     font-size: 19.5px;
     color: #000000;
     text-decoration: none;
     margin-left: 32px;
-}
+  }
 
-.header .profile {
+  .header .profile {
     width: 38.63px;
     height: 36px;
     margin-left: 24px;
-}
+  }
 
-.content {
+  .content {
+    padding: 0 48px;
     display: flex;
-    justify-content: space-between;
-    padding: 0 48px
-}
+  }
 
-.dashboard-float {
+  .dashboard-float {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-grow: 1;
-}
+  }
 
-.dashboard {
+  .dashboard {
     margin-top: 24px;
-    width: 360px;
+    width: 31vw;
     height: 100px;
-}
+    padding-right: 3vw;
+  }
 
-.dashboard .top {
+  .dashboard .top {
     position: relative;
-}
+  }
 
-.top .welcome {
+  .top .welcome {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
-    color: #000000;   
+    color: #000000;
     text-align: left;
-}
+  }
 
-.top .name {
+  .top .name {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 42px;
     color: #000000;
     text-align: left;
-}
+  }
 
-.top .online-status {
+  .top .online-status {
     position: absolute;
     top: 0;
     right: 0;
-}
+  }
 
-.online-status .online-count {
+  .online-status .online-count {
     display: flex;
     width: 100%;
     justify-content: flex-end;
     align-items: center;
-}
+  }
 
-.online-status .count {
+  .online-status .count {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: 19px;
     color: #333333;
-}
+  }
 
-.online-status .title {
+  .online-status .title {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     text-align: right;
     color: #333333;
-}
+  }
 
-.online-status .indicator {
+  .online-status .indicator {
     width: 17px;
     height: 17px;
     border-radius: 50%;
-    background-color: #47FC6F;
+    background-color: #47fc6f;
     margin-left: 8px;
-}
+  }
 
-.top .statistics {
-    background-color: #EFF2F9;
-    box-shadow: 0px 4px 32px #EFF2F9;
+  .top .statistics {
+    background-color: #eff2f9;
+    box-shadow: 0px 4px 32px #eff2f9;
     border-radius: 16px;
-    width: 336px;
-    height: 436px;
+    width: 30vw;
+    height: 73vh;
     margin-top: 16px;
     padding: 18px 12px;
-}
+  }
 
-.statistics .workout {
-    background: #FFFFFF;
+  .statistics .workout {
+    background: #ffffff;
     border-radius: 8px;
-    height: 80px;
+    height: 15vh;
     padding: 10px 12px;
-}
+  }
 
-.workout .title {
+  .workout .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 32px;
     color: #333333;
     text-align: left;
-}
+  }
 
-.workout .description {
+  .workout .description {
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
+    font-size: 14px;
     color: #333333;
     text-align: left;
-}
+  }
 
-.workout .scores {
+  .workout .scores {
     display: flex;
-}
+  }
 
-.scores .lifetime {
+  .scores .lifetime {
     display: flex;
     align-items: center;
-}
+  }
 
-.lifetime .score {
+  .lifetime .score {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 38px;
-    background: linear-gradient(180deg, #FF9A51 0%, #FF6262 100%);
+    font-size: 64px;
+    margin-right: 10px;
+    background: linear-gradient(180deg, #ff9a51 0%, #ff6262 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
+  }
 
-.lifetime .title {
+  .lifetime .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 22px;
     color: #333333;
     margin-left: 8px;
-}
+  }
 
-.scores .last {
+  .scores .last {
     display: flex;
     align-items: center;
     margin-left: 16px;
-}
+  }
 
-.last .score {
+  .last .score {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 38px;
-    background: linear-gradient(180deg, #47FC6F 0%, #70C3FF 100%);
+    font-size: 64px;
+    margin-right: 10px;
+    background: linear-gradient(180deg, #47fc6f 0%, #70c3ff 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
+  }
 
-.last .title {
+  .last .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 22px;
     color: #333333;
     margin-left: 8px;
-}
+  }
 
-.statistics .row {
+  .statistics .row {
     display: flex;
     justify-content: space-between;
-}
+  }
 
-.statistics .active {
-    background: #FFFFFF;
+  .statistics .active {
+    background: #ffffff;
     border-radius: 8px;
     margin-top: 12px;
-    height: 68px;
-    width: 84px;
+    height: 15vh;
+    width: 15vh;
     padding: 8px;
-}
+  }
 
-.active .title {
+  .active .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 22px;
     color: #333333;
-}
+  }
 
-.active .description {
+  .active .description {
     font-family: 'Montserrat', sans-serif;
-    font-size: 9px;
+    font-size: 14px;
     color: #333333;
-}
+  }
 
-.active .time {
+  .active .time {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
-    font-size: 20px;
-    margin-top: 12px;
-    background: linear-gradient(180deg, #7A4CFD 0%, #03BFFF 100%);
+    font-size: 32px;
+    margin-top: 2.5vh;
+    background: linear-gradient(180deg, #7a4cfd 0%, #03bfff 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
+  }
 
-.statistics .areas {
-    background: #FFFFFF;
+  .statistics .areas {
+    background: #ffffff;
     border-radius: 8px;
     margin-top: 12px;
-    height: 68px;
-    width: 207px;
+    height: 15vh;
+    width: 20.25vw;
     padding: 8px;
-}
+  }
 
-.areas .title {
+  .areas .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 12px;
+    font-size: 22px;
     color: #333333;
     text-align: left;
-}
+  }
 
-.areas .description {
+  .areas .description {
     font-family: 'Montserrat', sans-serif;
-    font-size: 9px;
+    font-size: 14px;
     color: #333333;
     text-align: left;
-}
+  }
 
-.areas .items {
+  .areas .items {
     display: flex;
     justify-content: space-between;
-    margin-top: 8px;
-}
+    margin-top: 22px;
+  }
 
-.items .item {
+  .item {
+      img {
+          height: 48px;
+      }
+  }
+
+  .items .item {
     display: flex;
-}
+  }
 
-.item .rank {
+  .item .rank {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
-    font-size: 10px;
+    font-size: 24px;
     color: #333333;
     text-align: left;
     margin-left: 4px;
-}
+  }
 
-.item .name {
+  .item .name {
     font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 10px;
-    color: #333333;
-    text-align: left;
-    margin-left: 4px;
-}
-
-.statistics .calendar {
-    background: #FFFFFF;
-    border-radius: 8px;
-    margin-top: 12px;
-    height: 210px;
-    padding: 8px
-}
-
-.calendar .title {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
     font-size: 18px;
     color: #333333;
     text-align: left;
-}
+    margin-left: 4px;
+  }
 
-.fc {
+  .statistics .calendar {
+    background: #ffffff;
+    border-radius: 8px;
+    margin-top: 12px;
+    height: 35vh;
+    padding: 8px;
+  }
+
+  .calendar .title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    color: #333333;
+    text-align: left;
+  }
+
+  .fc {
     font-family: 'Montserrat', sans-serif;
     margin-top: 8px;
-    height: 175px;
-}
+    height: 30vh;
+  }
 
-.fc .fc-toolbar {
+  .fc .fc-toolbar {
     display: none;
-}
+  }
+  .fc .fc-event-time {
+      font-size: 12px;
+  }
 
-.fc .fc-col-header-cell-cushion {
+  .fc .fc-col-header-cell-cushion {
     font-size: 12px;
-}
+  }
 
-
-.fc .fc-event-title {
+  .fc .fc-event-title {
     font-size: 10px;
-}
+  }
 
-.sessions {
-    width: 660px;
+  .sessions {
     margin-top: 24px;
-}
+  }
 
-.sessions .title {
+  .sessions .title {
     font-weight: 500;
-    font-size: 24px;
+    font-size: 32px;
     color: #000000;
     text-align: left;
-}
+  }
 
-.sessions .starter {
-    width: 63px;
-    height: 124px;
+  .sessions .starter {
+    height: 180px;
     margin-right: 20px;
-}
+    margin-left: -20px;
+  }
 
-.sessions .container {
+  .sessions .container {
     margin-top: 16px;
     display: flex;
     align-items: center;
+  }
 }
