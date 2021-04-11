@@ -78,7 +78,6 @@ const VideoCall = (props) => {
     iceCandidatePoolSize: 10,
   };
 
-  const pc = new RTCPeerConnection(servers);
   let localStream = null;
   let remoteStream = null;
 
@@ -87,6 +86,8 @@ const VideoCall = (props) => {
   const [roomId, setRoomId] = React.useState('');
 
   React.useEffect(async () => {
+    const pc = new RTCPeerConnection(servers);
+
     localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
