@@ -82,7 +82,7 @@ const VideoCall = (props) => {
   let remoteStream = null;
 
   const webcamVideo = React.createRef();
-  const remoteVideo = React.createRef();
+  const remoteVideo = React.useRef();
   const [roomId, setRoomId] = React.useState('');
 
   React.useEffect(async () => {
@@ -106,7 +106,9 @@ const VideoCall = (props) => {
       });
     };
 
-    remoteVideo.current.srcObject = remoteStream;
+    if (remoteVideo.current) {
+      remoteVideo.current.srcObject = remoteStream;
+    }
 
     // Check if we should create or join a call
     firestore
