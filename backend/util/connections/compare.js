@@ -76,7 +76,7 @@ module.exports = async (io, client) => {
         }
 
         // Cosine 
-        const confidenceScore = 100 - cosineDistanceMatching(poseVector1, poseVector2);
+        const confidenceScore = (1 - cosineDistanceMatching(poseVector1, poseVector2))*100;
         console.log("confidence: ", confidenceScore);
 
         /*

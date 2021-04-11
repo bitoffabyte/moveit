@@ -125,6 +125,11 @@
   }
   .local-video {
     position: relative;
+
+    .video {
+      transform: scaleX(-1);
+    }
+
     .microphone-button {
       cursor: pointer;
       position: absolute;
