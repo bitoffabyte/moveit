@@ -24,6 +24,8 @@ const firebaseConfig = {
 };
 
 const VideoCall = (props) => {
+  const [currentExercise, setCurrentExercise] = React.useState('Resting');
+
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
@@ -212,7 +214,11 @@ const VideoCall = (props) => {
               <img src={Video} alt="Video" className="icon" />
             </div>
 
-            <PoseEstimation socket={props.socket} roomId={roomId} />
+            <div className="local-exercise">
+              <p>Current Exercise</p>
+              <p className="current-exercise">{currentExercise}</p>
+            </div>
+            <PoseEstimation socket={props.socket} roomId={roomId} setCurrentExercise={setCurrentExercise}/>
           </div>
         </div>
         <div className="stats-container">

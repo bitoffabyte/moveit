@@ -8,7 +8,7 @@
 
   video {
     background: #333333;
-    // border-radius: 20px;
+    border-radius: 20px;
     height: 82vh;
     width: 33vw;
     margin: 0 1.5vw;
@@ -32,6 +32,34 @@
     .icon {
       width: 24px;
       height: 24px;
+    }
+  }
+
+  .local-exercise {
+    z-index: 2;
+    height: 60px;
+    width: 14vw;
+    //background-color: white;
+    position: absolute;
+    right: 5px;
+    top: -10px;
+    border: double 5px transparent;
+    border-radius: 10px;
+    background-image: linear-gradient(white, white), 
+                      linear-gradient(180deg, #21E935 0%, #12941F 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+
+    p {
+      margin: 10px;
+      margin-bottom: 5px;
+      font-size: 9px;
+    }
+
+    .current-exercise {
+      margin-top: 0px !important;
+      font-size: 20px;
+      font-weight: 700;
     }
   }
 

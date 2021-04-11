@@ -35,8 +35,6 @@ const PoseEstimation = (props) => {
     const [leftCurlAngle, setleftCurlAngle] = useState(0);
     const [rightCurlAngle, setrightCurlAngle] = useState(0);
 
-    const [currentExercise, setCurrentExercise] = useState("resting");
-
     // used to change currentExercise back to "resting" if it's been a few seconds 
     const [currentExerciseDuration, setCurrentExerciseDuration] = useState(0);
 
@@ -64,7 +62,11 @@ const PoseEstimation = (props) => {
             };
             props.socket.emit('sendKeypoints', data);
 
-            setCurrentExercise("squat");
+            props.setCurrentExercise("Squat");
+            props.socket.emit('setExercise', {
+                roomId: props.roomId,
+                exercise: 'Squat'
+            });
             return true; 
         }
 
@@ -122,9 +124,14 @@ const PoseEstimation = (props) => {
                 roomId: props.roomId,
                 keypoints: lastKeypoints
             };
+            
             props.socket.emit('sendKeypoints', data);
 
-            setCurrentExercise("curl");
+            props.setCurrentExercise("Bicep Curl");
+            props.socket.emit('setExercise', {
+                roomId: props.roomId,
+                exercise: 'Bicep Curl'
+            });
             return true; 
         }
         return false;
@@ -215,7 +222,11 @@ const PoseEstimation = (props) => {
                 } else {
                     setCurrentExerciseDuration(currentExerciseDuration + 1);
                     if (currentExerciseDuration > durationThreshold) {
-                        setCurrentExercise("resting");
+                        props.setCurrentExercise("Resting");
+                        props.socket.emit('setExercise', {
+                            roomId: props.roomId,
+                            exercise: 'Resting'
+                        });
                     }
                 }
         }
@@ -228,7 +239,11 @@ const PoseEstimation = (props) => {
             } else {
                 setCurrentExerciseDuration(currentExerciseDuration + 1)
                 if (currentExerciseDuration > durationThreshold) {
-                    setCurrentExercise("resting");
+                    props.setCurrentExercise("Resting");
+                    props.socket.emit('setExercise', {
+                        roomId: props.roomId,
+                        exercise: 'Resting'
+                    });
                 }
             }
         }
