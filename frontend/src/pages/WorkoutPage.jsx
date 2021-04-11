@@ -3,7 +3,7 @@ import React from 'react';
 import VideoCall from 'components/VideoCall';
 import VideoNavBar from 'components/VideoNavBar';
 
-const WorkoutPage  = () => { 
+const WorkoutPage  = (props) => { 
 
   const [currentTime, setCurrentTime] = React.useState(0);
   const startTimer = () => {
@@ -11,10 +11,11 @@ const WorkoutPage  = () => {
       setCurrentTime(time => time + 1);
     }, 1000);
   }
+
   return (
     <>
       <VideoNavBar currentTime={currentTime}/>
-      <VideoCall startTimer={startTimer}/>
+      <VideoCall socket={props.socket} startTimer={startTimer}/>
     </>
   )
 }

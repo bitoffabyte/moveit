@@ -63,7 +63,7 @@ const VideoCall = (props) => {
         const offerCandidates = callDoc.collection('offerCandidates');
         const answerCandidates = callDoc.collection('answerCandidates');
     
-        console.log(callDoc.id);
+        props.socket.emit('joinRoom', callDoc.id);
     
         pc.onicecandidate = (event) => {
           if (event.candidate) {
@@ -136,6 +136,8 @@ const VideoCall = (props) => {
           });
           props.startTimer();
           callDoc.delete();
+
+          props.socket.emit('joinRoom', doc.id);
         });
       }
     });
