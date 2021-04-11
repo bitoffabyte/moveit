@@ -39,6 +39,7 @@ const VideoCall = (props) => {
     { uv: 50 },
     { uv: 50 },
   ]);
+  const [currentScores, setScores] = React.useState([]);
 
   const setCurrentExerciseTwo = (exercise) => {
     if (exercise !== 'Resting') {
@@ -215,28 +216,27 @@ const VideoCall = (props) => {
           newChartData.push({uv: data});
           return newChartData;
         });
+        setScores(scores => {
+          const newScores = [...scores];
+          let newMessage = '';
+          if(data < 30) {
+            newMessage = "That's it?";
+          } else if (data < 50) {
+            newMessage ='Harder!';
+          } else if (data < 75) {
+            newMessage = "That's it!";
+          } else {
+            newMessage = "You're on fire!";
+          }
+          const newScore = {
+            message: newMessage,
+            value: Math.floor(data)
+          }
+          newScores.push(newScore);
+          return newScores;
+        });
       })
   }, []);
-
-  const performacePoints = [
-    { uv: 29.28 },
-    { uv: 45.62 },
-    { uv: 38.36 },
-    { uv: 32.13 },
-    { uv: 42.77 },
-    { uv: 32.39 },
-    { uv: 37.06 },
-    { uv: 46.14 },
-    { uv: 42.51 },
-    { uv: 56.25 },
-    { uv: 37.58 },
-    { uv: 50.29 },
-    { uv: 45.1 },
-    { uv: 58.07 },
-    { uv: 53.66 },
-    { uv: 64.29 },
-  ];
-
   const scores = [
     {message: 'NOT VISIBLE', value: 10},
     {message: 'NOT VISIBLE', value: 20},
@@ -293,7 +293,7 @@ const VideoCall = (props) => {
           </div>
           <div className="remote-video">
             <div className="scores">
-              {generateScores(chartData.slice(5, chartData.length)).map((score) => (
+              {currentScores.map((score) => (
                 <div className="score">
                   <div className="col"> 
                     <p className="value">{score.value}</p>
