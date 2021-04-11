@@ -19,7 +19,7 @@ import DrYash from '../../assets/dryash.png';
 import WatchCatalog from '../../assets/watchcatalog.png';
 import Instructor from '../../assets/instructor.png';
 
-import './style.css';
+import './style.scss';
 
 const Home  = () => {
   const upcomingSessions = [{

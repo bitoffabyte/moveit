@@ -2,6 +2,11 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import PoseEstimation from './PoseEstimation';
+import { AreaChart, Area } from "recharts";
+
+import Biceps from '../../assets/biceps.svg';
+import Legs from '../../assets/legs.svg';
+import Shoulders from '../../assets/shoulders.svg';
 
 import './style.scss';
 
@@ -143,6 +148,25 @@ const VideoCall = (props) => {
     });
   }, []);
 
+  const data = [
+    { uv: 29.28 },
+    { uv: 45.62 },
+    { uv: 38.36 },
+    { uv: 32.13 },
+    { uv: 42.77 },
+    { uv: 32.39 },
+    { uv: 37.06 },
+    { uv: 46.14 },
+    { uv: 42.51 },
+    { uv: 56.25 },
+    { uv: 37.58 },
+    { uv: 50.29 },
+    { uv: 45.1 },
+    { uv: 58.07 },
+    { uv: 53.66 },
+    { uv: 64.29 },
+  ];
+
   return (
     <>
       <div className="videos">
@@ -151,6 +175,83 @@ const VideoCall = (props) => {
         </span>
         <span>
           <video ref={remoteVideo} autoPlay playsInline />
+        </span>
+        <span>
+        <div className="title">Live Statistics</div>
+        <div className="statistics">
+          <div className="performance">
+            <p className="title">Avg Performance</p>
+            <p className="description">Based off similarity</p>
+            <p className="score">76</p>
+            <AreaChart width={239} height={100} data={data} margin={{top: 0, left: 0, right: 0, bottom: 0}} >
+              <Area type="monotone" dataKey="uv" stroke="#FFA768" fill="#FFA768" dot />
+            </AreaChart>
+          </div>
+          <div className="workout">
+            <p className="title">Workout Count</p>
+            <div className="split">
+              <p className="col-name">Type</p>
+              <p className="col-name">Reps</p>
+            </div>
+            <div className="split">
+              <p className="data-name">Arm Stretch</p>
+              <p className="data-value">15x</p>
+            </div>
+            <div className="divider" />
+            <div className="split">
+              <p className="data-name">Bicep Curls</p>
+              <p className="data-value">12x</p>
+            </div>
+            <div className="divider" />
+            <div className="split">
+              <p className="data-name">Jumping Jacks</p>
+              <p className="data-value">32x</p>
+            </div>
+            <div className="divider" />
+            <div className="split">
+              <p className="data-name">Pushups</p>
+              <p className="data-value">50x</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="active">
+              <p className="title">Active Time</p>
+              <p className="description">This Session</p>
+              <p className="time">42m</p>
+            </div>
+            <div className="calories">
+              <p className="title">Calories Burned</p>
+              <p className="description">This Session</p>
+              <p className="count">312cal</p>
+            </div>
+          </div>
+          <div className="areas">
+            <p className="title">Top Set Scores</p>
+            <div className="items">
+              <div className="item">
+                <img src={Biceps} alt="Biceps" />
+                <div>
+                  <p className="rank">#1</p>
+                  <p className="name">Biceps</p>
+                </div>
+              </div>
+              <div className="item">
+                <img src={Legs} alt="Legs" />
+                <div>
+                  <p className="rank">#2</p>
+                  <p className="name">Legs</p>
+                </div>
+              </div>
+              <div className="item">
+                <img src={Shoulders} alt="Shoulders" />
+                <div>
+                  <p className="rank">#3</p>
+                  <p className="name">Shoulders</p>
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
         </span>
       </div>
     </>
