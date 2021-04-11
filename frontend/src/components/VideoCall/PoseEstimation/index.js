@@ -9,7 +9,7 @@ const minPoseConfidence = 0.2;
 const canvasWidth = window.innerHeight * 1.11;
 const canvasHeight = window.innerHeight * 0.83;
 
-const durationThreshold = 75;
+const durationThreshold = 50;
 let lastKeypoints = {};
 
 const squatJoints = ["leftKnee", "leftHip", "rightHip", "rightKnee"];
@@ -170,7 +170,6 @@ const PoseEstimation = (props) => {
 
         // verify jumping jack is up. checks that shoulder is at the bottom, then elbow
         const jumpingJackPositionStatus = leftSide[0].y < leftSide[1].y && rightSide[0].y < rightSide[1].y;
-        console.log(jumpingJackPositionStatus)
 
         setleftJJAngle(left);
         setrightJJAngle(right);
