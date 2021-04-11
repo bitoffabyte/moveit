@@ -24,6 +24,9 @@ const firebaseConfig = {
 };
 
 const VideoCall = (props) => {
+  const [currentExercise, setCurrentExercise] = React.useState('Resting');
+  const [remoteExercise, setRemoteExercise] = React.useState('Resting');
+
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
@@ -163,6 +166,10 @@ const VideoCall = (props) => {
           });
         }
       });
+      props.socket.on('newExercise', data => {
+        console.log('detected new exercise')
+        setRemoteExercise(exercise => data);
+      })
   }, []);
 
   const data = [
@@ -203,6 +210,10 @@ const VideoCall = (props) => {
               <img src={Video} alt="Video" className="icon" />
             </div>
             <video ref={remoteVideo} autoPlay playsInline />
+            <div className="local-exercise">
+              <p>Current Exercise</p>
+              <p className="current-exercise">{remoteExercise}</p>
+            </div>
           </div>
           <div className="remote-video">
             <div className="microphone-button">
@@ -212,7 +223,11 @@ const VideoCall = (props) => {
               <img src={Video} alt="Video" className="icon" />
             </div>
 
-            <PoseEstimation socket={props.socket} roomId={roomId} />
+            <div className="local-exercise">
+              <p>Current Exercise</p>
+              <p className="current-exercise">{currentExercise}</p>
+            </div>
+            <PoseEstimation socket={props.socket} roomId={roomId} setCurrentExercise={setCurrentExercise}/>
           </div>
         </div>
         <div className="stats-container">

@@ -74,7 +74,11 @@ const PoseEstimation = (props) => {
                 props.socket.emit('sendKeypoints', data);
             }
 
-            setCurrentExercise("squat");
+            props.setCurrentExercise("Squat");
+            props.socket.emit('setExercise', {
+                roomId: props.roomId,
+                exercise: 'Squat'
+            });
             return true; 
         }
 
@@ -133,7 +137,11 @@ const PoseEstimation = (props) => {
                 props.socket.emit('sendKeypoints', data);
             }
 
-            setCurrentExercise("curl");
+            props.setCurrentExercise("Bicep Curl");
+            props.socket.emit('setExercise', {
+                roomId: props.roomId,
+                exercise: 'Bicep Curl'
+            });
             return true; 
         }
         return false;
@@ -265,15 +273,23 @@ const PoseEstimation = (props) => {
 
         const standingStatus = isStanding(allKeypoints);
 
-        if (standingStatus && (currentExercise === "resting" || currentExercise === "squat")) {
-            const isSquat = squatDetection(squatCoords);
-            if (isSquat) {
-                setCurrentExerciseDuration(0);
-                return;
-            } else {
-                setCurrentExerciseDuration(currentExerciseDuration + 1);
-                if (currentExerciseDuration > durationThreshold) {
-                    setCurrentExercise("resting");
+        if (standingStatus) {
+                const isSquat = squatDetection(squatCoords);
+                if (isSquat) {
+                    setCurrentExerciseDuration(0);
+                    return;
+                } else {
+                    setCurrentExerciseDuration(currentExerciseDuration + 1);
+                    if (currentExerciseDuration > durationThreshold) {
+                        props.setCurrentExercise("Resting");
+
+                        if (props.socket) {
+                            props.socket.emit('setExercise', {
+                                roomId: props.roomId,
+                                exercise: 'Resting'
+                            });
+                        }
+                    }
                 }
             }
         }
@@ -286,36 +302,26 @@ const PoseEstimation = (props) => {
             } else {
                 setCurrentExerciseDuration(currentExerciseDuration + 1);
                 if (currentExerciseDuration > durationThreshold) {
-                    setCurrentExercise("resting");
+                    props.setCurrentExercise("Resting");
+                    props.socket.emit('setExercise', {
+                        roomId: props.roomId,
+                        exercise: 'Resting'
+                    });
                 }
             }
         }
-
-        // if (!standingStatus && currentExercise !== "squat") {
-        //     const isCurl = curlsDetection(curlCoords);
-        //     if (isCurl) {
-        //         setCurrentExerciseDuration(0);
-        //         return;
-        //     } else {
-        //         setCurrentExerciseDuration(currentExerciseDuration + 1)
-        //         if (currentExerciseDuration > durationThreshold) {
-        //             setCurrentExercise("resting");
-        //         }
-        //     }
-        // }
-
 	};
 
     return (
         <>
-            <h3>Current Exercise: {currentExercise}</h3>
+            {/* <h3>Current Exercise: {currentExercise}</h3> */}
             <Sketch setup={setup} draw={draw} />
-            <h3>Number of Squats: {squatsCount}</h3>
-            <h3>Number of Jumping Jacks: {jjCount}</h3>
+            {/* <h3>Number of Squats: {squatsCount}</h3>
+            <h3>Number of Jumping Jacks: {jjCount}</h3> */}
             {/* <h3>Squats State: {squatsState}</h3> */}
-            <h3>JJ Left Angle: {leftJJAngle}</h3>
+            {/* <h3>JJ Left Angle: {leftJJAngle}</h3>
             <h3>JJ Right Angle: {rightJJAngle}</h3>
-            <h3>Number of Curls: {curlsCount}</h3>
+            <h3>Number of Curls: {curlsCount}</h3> */}
             {/* <h3>Curls State: {curlsState}</h3> */}
             {/* <h3>Curls Left Angle: {leftCurlAngle}</h3>
             <h3>Curls Right Angle: {rightCurlAngle}</h3>  */}

@@ -33,6 +33,7 @@ module.exports = async (io, client) => {
   client.on('sendKeypoints', data => {
     console.log('keypoints sent');
     //console.log(data);
+    if (keypointData[data.roomId] && keypointData[data.roomId][client.id]) {
     keypointData[data.roomId][client.id].keypoints = data.keypoints;
     keypointData[data.roomId][client.id].done = true;
     console.log(JSON.stringify(keypointData));
@@ -141,6 +142,7 @@ module.exports = async (io, client) => {
         }
         */
         client.to(data.roomId).emit('confidenceScore', confidenceScore);
+      }
       }
     }
   });
