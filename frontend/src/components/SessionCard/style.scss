@@ -1,10 +1,11 @@
 .session-card {
-    width: 160px;
-    height: 108px;
+    width: 230px;
+    height: 160px;
     border-radius: 6.5px;
     padding: 10px 8px;
     position: relative;
     margin-right: 20px;
+    object-fit: cover;
 
     /* Default color */
     background: #ff8686;
@@ -30,31 +31,35 @@ p {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     color: #FFFFFF;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .session-card .background {
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     width: 100%;
+    object-fit: cover;
+    border-radius: 6.5px;
+    height: 100%;
     z-index: -1;
 }
 
 .session-card .name {
     font-weight: 600;
-    font-size: 15px;
+    font-size: 24px;
     text-align: left;
 }
 
 .session-card .duration {
     font-weight: 300;
     text-align: left;
-    margin-top: 4px;
+    margin-top: 6spx;
+    font-size: 14px;
 }
 
 .session-card .info-flex {
-    margin-top: 8px;
+    margin-top: 28px;
     display: flex;
     justify-content: space-between;
 }
@@ -67,11 +72,13 @@ p {
 
 .session-card .instructor .instructor-title {
     font-weight: 500;
+    font-size: 16px;
 }
 
 .session-card .time {
     font-weight: 600;
     text-align: right;
+    font-size: 16px;
 }
 
 .session-card .buttons {
@@ -83,12 +90,12 @@ p {
     font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 8.5px;
+    font-size: 14px;
     color: #FFFFFF;
     border: 1px solid #FFFFFF;
     border-radius: 5px;
     background: none;
-    height: 20px;
+    height: 30px;
     padding: 0px 8px;
     cursor: pointer;
 
