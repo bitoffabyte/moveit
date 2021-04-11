@@ -83,7 +83,7 @@ const VideoCall = (props) => {
   let remoteStream = null;
 
   const webcamVideo = React.createRef();
-  const remoteVideo = React.createRef();
+  const remoteVideo = React.useRef();
   const [roomId, setRoomId] = React.useState('');
 
   React.useEffect(async () => {
