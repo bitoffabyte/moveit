@@ -1,18 +1,102 @@
 .videos {
   display: flex;
   align-items: center;
-  height: 90vh;
-  width: 75vw;
+  // height: 90vh;
+  // width: 75vw;
   justify-content: center;
 
   video {
     background: #333333;
-    border-radius: 20px;
+    // border-radius: 20px;
     height: 82vh;
     width: 33vw;
     margin: 0 1.5vw;
     object-fit: cover;
     object-position: center;
+  }
+
+  .local-video {
+    position: relative;
+    .microphone-button {
+      cursor: pointer;
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      bottom: 16px;
+      right: calc(1.5vw + 56px + 16px);
+      background-color: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15.0821px);
+      border-radius: 10.258px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    .video-button {
+      cursor: pointer;
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      bottom: 16px;
+      right: calc(1.5vw + 16px);
+      background-color: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15.0821px);
+      border-radius: 10.258px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .remote-video {
+    position: relative;
+
+    .instructor-tag {
+      position: absolute;
+      bottom: 24px;
+      left: 48px;
+
+      width: 132px;
+      height: 22px;
+      padding: 8px;
+
+      background: #FFFFFF;
+      border: 1px solid #000000;
+      backdrop-filter: blur(27px);
+      border-radius: 5px;
+      
+      display: flex;
+      align-items: center;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+      }
+
+      .title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 300;
+        font-size: 10px;
+        color: #333333;
+      }
+
+      .name {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        color: #333333;
+      }
+    }
   }
 
   .react-p5 {
