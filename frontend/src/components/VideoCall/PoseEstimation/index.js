@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'; 
-import { angle, checkCurlActive, checkCurlRest, checkSquatDown, checkSquatStanding, average, isSquatPosition, isCurlPosition, isStanding, isSitting } from './utils';
+import { angle, checkCurlActive, checkCurlRest, checkSquatDown, checkSquatStanding, average, isSquatPosition, isCurlPosition, isStanding, isSitting, checkJJUp, checkJJDown } from './utils';
 
 import ml5 from 'ml5';
 import Sketch from 'react-p5';
@@ -9,17 +9,19 @@ const minPoseConfidence = 0.2;
 const canvasWidth = window.innerHeight * 1.11;
 const canvasHeight = window.innerHeight * 0.83;
 
-const durationThreshold = 150;
+const durationThreshold = 75;
 let lastKeypoints = {};
 
 const squatJoints = ["leftKnee", "leftHip", "rightHip", "rightKnee"];
 const curlJoints = ["leftShoulder", "leftElbow", "rightShoulder", "rightElbow", "leftWrist", "rightWrist"];
+const jjJoints = ["leftShoulder", "leftElbow", "rightShoulder", "rightElbow"];
 
 const PoseEstimation = (props) => {
     const videoRef = useRef(); 
     const [poses, setPoses] = useState([]);    
 
     const [squatsCount, setSquatsCount] = useState(0);
+    const [jjCount, setJJCount] = useState(0);
     const [curlsCount, setCurlsCount] = useState(0);
 
     // "up", "down"
@@ -27,14 +29,19 @@ const PoseEstimation = (props) => {
 
     // "", "rest", "curl"
     const [curlsState, setCurlsState] = useState("");
-
+    
+    // "rest", "jj"
+    const [jjState, setJJState] = useState("rest");
 
     const [leftSquatAngle, setleftSquatAngle] = useState(0);
     const [rightSquatAngle, setrightSquatAngle] = useState(0);
 
     const [leftCurlAngle, setleftCurlAngle] = useState(0);
     const [rightCurlAngle, setrightCurlAngle] = useState(0);
-
+    
+    const [leftJJAngle, setleftJJAngle] = useState(0);
+    const [rightJJAngle, setrightJJAngle] = useState(0);
+    
     const [currentExercise, setCurrentExercise] = useState("resting");
 
     // used to change currentExercise back to "resting" if it's been a few seconds 
@@ -63,7 +70,9 @@ const PoseEstimation = (props) => {
                 keypoints: lastKeypoints,
                 exerciseType: "squat"
             };
-            props.socket.emit('sendKeypoints', data);
+            if (props.socket) {
+                props.socket.emit('sendKeypoints', data);
+            }
 
             setCurrentExercise("squat");
             return true; 
@@ -80,10 +89,6 @@ const PoseEstimation = (props) => {
               rightElbowCoord = curlCoords["rightElbow"],
               leftWristCoord = curlCoords["leftWrist"],
               rightWristCoord = curlCoords["rightWrist"];
-
-        // if (leftShoulderCoord && rightShoulderCoord) {
-        //     console.log("shoulder distance: ", Math.abs(rightShoulderCoord.position.x - leftShoulderCoord.position.x));
-        // }
               
         if (!((leftShoulderCoord && leftElbowCoord && leftWristCoord) || (rightShoulderCoord && rightElbowCoord && rightWristCoord))) {
             // only reset if currently on resting position 
@@ -124,12 +129,56 @@ const PoseEstimation = (props) => {
                 keypoints: lastKeypoints,
                 exerciseType: "curl"
             };
-            props.socket.emit('sendKeypoints', data);
+            if (props.socket) {
+                props.socket.emit('sendKeypoints', data);
+            }
 
             setCurrentExercise("curl");
             return true; 
         }
         return false;
+    }
+
+    const jjDetection = (jjCoords) => {
+        const leftShoulderCoord = jjCoords["leftShoulder"],
+                leftElbowCoord = jjCoords["leftElbow"],
+                rightShoulderCoord = jjCoords["rightShoulder"],
+                rightElbowCoord = jjCoords["rightElbow"];
+
+        if (!leftShoulderCoord || !rightShoulderCoord || !leftElbowCoord || !rightElbowCoord) {
+            return false;
+        }
+
+        const left = angle(leftElbowCoord.position, leftShoulderCoord.position, rightShoulderCoord.position);
+        const right = angle(rightElbowCoord.position, rightShoulderCoord.position, leftShoulderCoord.position);
+
+        const leftSide = [leftElbowCoord.position, leftShoulderCoord.position];
+        const rightSide = [rightElbowCoord.position, rightShoulderCoord.position];
+
+        // verify jumping jack is up. checks that shoulder is at the bottom, then elbow
+        const jumpingJackPositionStatus = leftSide[0].y < leftSide[1].y && rightSide[0].y < rightSide[1].y;
+        console.log(jumpingJackPositionStatus)
+
+        setleftJJAngle(left);
+        setrightJJAngle(right);
+
+        if (jjState === "rest" && jumpingJackPositionStatus && (checkJJUp(left) && checkJJUp(right))) {
+            setJJState("jj");
+        } else if (jjState === "jj" && (checkJJDown(left) && checkJJDown(right))) {
+            setJJState("rest");
+            setJJCount(jjCount + 1);
+            const data = {
+                roomId: props.roomId,
+                keypoints: lastKeypoints,
+                exerciseType: "jj"
+            };
+            if (props.socket) {
+                props.socket.emit('sendKeypoints', data);
+            }
+
+            setCurrentExercise("jumping jack");
+            return true; 
+        }
     }
 
     const setup = (p5, canvasParentRef) => {
@@ -159,13 +208,14 @@ const PoseEstimation = (props) => {
 
         const squatCoords = {};
         const curlCoords = {};
+        const jjCoords = {};
 
         const allKeypoints = {};
 
         // draws keypoints
         for (let i = 0; i < poses.length; i++) {
             const pose = poses[i].pose;
-            if (i == 0) {
+            if (i === 0) {
                 lastKeypoints = pose.keypoints;
             }
 
@@ -186,6 +236,10 @@ const PoseEstimation = (props) => {
 
                     if (curlJoints.some((part) => part === keypoint.part)) {
                         curlCoords[keypoint.part] = keypoint;
+                    }
+
+                    if (jjJoints.some((part) => part === keypoint.part)) {
+                        jjCoords[keypoint.part] = keypoint;
                     }
                     allKeypoints[keypoint.part] = keypoint;
                 }
@@ -209,43 +263,59 @@ const PoseEstimation = (props) => {
             }
         }
 
-        if (isStanding(allKeypoints)) {
-                const isSquat = squatDetection(squatCoords);
-                if (isSquat) {
-                    setCurrentExerciseDuration(0);
-                    return;
-                } else {
-                    setCurrentExerciseDuration(currentExerciseDuration + 1);
-                    if (currentExerciseDuration > durationThreshold) {
-                        setCurrentExercise("resting");
-                    }
-                }
-        }
+        const standingStatus = isStanding(allKeypoints);
 
-        if (isSitting(allKeypoints)) {
-            const isCurl = curlsDetection(curlCoords);
-            if (isCurl) {
+        if (standingStatus && (currentExercise === "resting" || currentExercise === "squat")) {
+            const isSquat = squatDetection(squatCoords);
+            if (isSquat) {
                 setCurrentExerciseDuration(0);
                 return;
             } else {
-                setCurrentExerciseDuration(currentExerciseDuration + 1)
+                setCurrentExerciseDuration(currentExerciseDuration + 1);
                 if (currentExerciseDuration > durationThreshold) {
                     setCurrentExercise("resting");
                 }
             }
         }
 
+        if (standingStatus && (currentExercise === "resting" || currentExercise === "jumping jack")) {
+            const isJJ = jjDetection(jjCoords);
+            if (isJJ) {
+                setCurrentExerciseDuration(0);
+                return;
+            } else {
+                setCurrentExerciseDuration(currentExerciseDuration + 1);
+                if (currentExerciseDuration > durationThreshold) {
+                    setCurrentExercise("resting");
+                }
+            }
+        }
+
+        // if (!standingStatus && currentExercise !== "squat") {
+        //     const isCurl = curlsDetection(curlCoords);
+        //     if (isCurl) {
+        //         setCurrentExerciseDuration(0);
+        //         return;
+        //     } else {
+        //         setCurrentExerciseDuration(currentExerciseDuration + 1)
+        //         if (currentExerciseDuration > durationThreshold) {
+        //             setCurrentExercise("resting");
+        //         }
+        //     }
+        // }
+
 	};
 
     return (
         <>
-            {/* <h3>Current Exercise: {currentExercise}</h3> */}
+            <h3>Current Exercise: {currentExercise}</h3>
             <Sketch setup={setup} draw={draw} />
-            {/* <h3>Number of Squats: {squatsCount}</h3> */}
-            {/* <h3>Squats State: {squatsState}</h3>
-            <h3>Squats Left Angle: {leftSquatAngle}</h3>
-            <h3>Squats Right Angle: {rightSquatAngle}</h3> */}
-            {/* <h3>Number of Curls: {curlsCount}</h3> */}
+            <h3>Number of Squats: {squatsCount}</h3>
+            <h3>Number of Jumping Jacks: {jjCount}</h3>
+            {/* <h3>Squats State: {squatsState}</h3> */}
+            <h3>JJ Left Angle: {leftJJAngle}</h3>
+            <h3>JJ Right Angle: {rightJJAngle}</h3>
+            <h3>Number of Curls: {curlsCount}</h3>
             {/* <h3>Curls State: {curlsState}</h3> */}
             {/* <h3>Curls Left Angle: {leftCurlAngle}</h3>
             <h3>Curls Right Angle: {rightCurlAngle}</h3>  */}

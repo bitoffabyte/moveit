@@ -17,7 +17,7 @@ ReactDOM.render(
     <Router>
       <Switch>
         <Route path="/pose-dev">
-          <PoseEstimation socket={socket} />
+          <PoseEstimation />
         </Route>
         <Route path="/workout">
           <WorkoutPage socket={socket}/>
