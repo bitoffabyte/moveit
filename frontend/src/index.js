@@ -9,9 +9,8 @@ import PoseEstimation from 'components/VideoCall/PoseEstimation';
 
 import socketIOClient from 'socket.io-client';
 
-const ENDPOINT = 'https://citrus-moveit.herokuapp.com/';
+const ENDPOINT = 'http://localhost:3001';
 const socket = socketIOClient(ENDPOINT);
-
 
 ReactDOM.render(
   <React.StrictMode>

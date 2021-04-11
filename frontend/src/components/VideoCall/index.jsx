@@ -41,6 +41,7 @@ const VideoCall = (props) => {
 
   const webcamVideo = React.createRef();
   const remoteVideo = React.createRef();
+  const [roomId, setRoomId] = React.useState('');
 
   React.useEffect(async () => {
     localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -69,6 +70,7 @@ const VideoCall = (props) => {
         const answerCandidates = callDoc.collection('answerCandidates');
     
         props.socket.emit('joinRoom', callDoc.id);
+        setRoomId(id => callDoc.id);
     
         pc.onicecandidate = (event) => {
           if (event.candidate) {
@@ -143,6 +145,7 @@ const VideoCall = (props) => {
           callDoc.delete();
 
           props.socket.emit('joinRoom', doc.id);
+          setRoomId(id => doc.id);
         });
       }
     });
@@ -171,7 +174,7 @@ const VideoCall = (props) => {
     <>
       <div className="videos">
         <span>
-          <PoseEstimation />
+          <PoseEstimation socket={props.socket} roomId={roomId}/>
         </span>
         <span>
           <video ref={remoteVideo} autoPlay playsInline />

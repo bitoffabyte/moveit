@@ -10,11 +10,12 @@ const canvasWidth = window.innerHeight * 1.11;
 const canvasHeight = window.innerHeight * 0.83;
 
 const durationThreshold = 150;
+let lastKeypoints = {};
 
 const squatJoints = ["leftKnee", "leftHip", "rightHip", "rightKnee"];
 const curlJoints = ["leftShoulder", "leftElbow", "rightShoulder", "rightElbow", "leftWrist", "rightWrist"];
 
-const PoseEstimation = () => {
+const PoseEstimation = (props) => {
     const videoRef = useRef(); 
     const [poses, setPoses] = useState([]);    
 
@@ -57,6 +58,11 @@ const PoseEstimation = () => {
         } else if (squatsState === "up" && (checkSquatDown(left) && checkSquatDown(right))) {
             setSquatsState("down");
             setSquatsCount(squatsCount + 1);
+            const data = {
+                roomId: props.roomId,
+                keypoints: lastKeypoints
+            };
+            props.socket.emit('sendKeypoints', data);
 
             setCurrentExercise("squat");
             return true; 
@@ -112,8 +118,13 @@ const PoseEstimation = () => {
         } else if (curlsState === "rest" && checkCurlActive(curlAngle)) {
             setCurlsState("curl");
             setCurlsCount(curlsCount + 1);
+            const data = {
+                roomId: props.roomId,
+                keypoints: lastKeypoints
+            };
+            props.socket.emit('sendKeypoints', data);
 
-            setCurrentExercise("curl")
+            setCurrentExercise("curl");
             return true; 
         }
         return false;
@@ -151,7 +162,10 @@ const PoseEstimation = () => {
 
         // draws keypoints
         for (let i = 0; i < poses.length; i++) {
-            const pose = poses[i].pose; 
+            const pose = poses[i].pose;
+            if (i == 0) {
+                lastKeypoints = pose.keypoints;
+            }
 
             for (let j = 0; j < pose.keypoints.length; j += 1) {
                 // A keypoint is an object describing a body part (like rightArm or leftShoulder)
