@@ -3,8 +3,9 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import ml5 from 'ml5';
 import Sketch from 'react-p5';
+import { angle, checkSquatDown, checkSquatStanding } from './utils';
 
-import './style.css';
+import './style.scss';
 
 const minPoseConfidence = 0.2;
 
@@ -21,6 +22,13 @@ const firebaseConfig = {
 const VideoCall = () => {
 
   const [poses, setPoses] = React.useState([]);  
+  const [leftThighAngle, setLeftThighAngle] = React.useState(0);
+  const [rightThighAngle, setRightThighAngle] = React.useState(0);
+
+  const [squatsCount, setSquatsCount] = React.useState(0);
+
+  // "", "up", "down"
+  const [squatsState, setSquatsState] = React.useState("");
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -148,6 +156,28 @@ const VideoCall = () => {
   }, []);
 
   /** POSE DETECTION **/
+
+  const squatDetection = (squatCoords) => {
+      // look for squats (leftKnee --> leftHip, rightKnee --> rightHip, leftHip --> rightHip)
+      if (Object.keys(squatCoords).length !== 4) {
+          return
+      }
+
+      // Squat state: standing --> squat = 1 squat
+      const leftAngle = angle(squatCoords["leftKnee"], squatCoords["leftHip"], squatCoords["rightHip"]);
+      const rightAngle = angle(squatCoords["rightKnee"], squatCoords["rightHip"], squatCoords["leftHip"]);
+
+      setLeftThighAngle(leftAngle);
+      setRightThighAngle(rightAngle);
+
+      if ((squatsState === "" || squatsState === "down") && checkSquatStanding(leftAngle) && checkSquatStanding(rightAngle)) {
+          setSquatsState("up");
+      } else if (squatsState === "up" && checkSquatDown(leftAngle) && checkSquatDown(rightAngle)) {
+          setSquatsState("down");
+          setSquatsCount(squatsCount + 1);
+      }
+  }
+
   const setupLocal = (p5, canvasParentRef) => {
 		// use parent to render the canvas in this ref
 		// (without that p5 will render the canvas outside of your component)
@@ -210,7 +240,7 @@ const VideoCall = () => {
         }
     }
 
-    //squatDetection(squatCoords);
+    squatDetection(squatCoords);
   };
 
   return (
@@ -224,6 +254,12 @@ const VideoCall = () => {
           <h3>Remote Stream</h3>
           <video ref={remoteVideo} autoPlay playsInline />
         </span>
+        <div className="info">
+        <p>Left Thigh Angle: {leftThighAngle}</p>
+            <p>Right Thigh Angle: {rightThighAngle}</p>
+            <p>Number of Squats: {squatsCount}</p>
+            <p>Squats State: {squatsState}</p>
+        </div>
       </div>
     </>
   );
