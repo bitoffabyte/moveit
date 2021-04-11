@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 import './style.scss';
 import logo from 'assets/logo.svg';
 import { NavLink } from 'react-router-dom'
@@ -15,7 +17,13 @@ const VideoNavBar = (props) => {
       <div className="right">
         <span className="timer">{Math.floor(props.currentTime / 60)}m {props.currentTime % 60}s</span>
         <NavLink to="/home">
-          <button className="end-session">
+          <button className="end-session" onClick={() => {
+              // firebase.firestore().collection('calls').listDocuments().then(val => {
+              //     val.map((val) => {
+              //         val.delete()
+              //     })
+              // })
+          }}>
             End Session
           </button>
         </NavLink>

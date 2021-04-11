@@ -216,6 +216,7 @@ const VideoCall = (props) => {
           newChartData.push({uv: data});
           return newChartData;
         });
+
         setScores(scores => {
           const newScores = [...scores];
           let newMessage = '';
@@ -233,39 +234,11 @@ const VideoCall = (props) => {
             value: Math.floor(data)
           }
           newScores.push(newScore);
+
           return newScores;
         });
       })
   }, []);
-  const scores = [
-    {message: 'NOT VISIBLE', value: 10},
-    {message: 'NOT VISIBLE', value: 20},
-    {message: 'Harder!', value: 31},
-    {message: 'Work on it more!', value: 73},
-    {message: 'You’re on fire!', value: 93},
-  ];
-
-  const generateScores = (chartDataScores) => {
-    const newChartData = chartDataScores.slice(chartDataScores.length - 3, chartDataScores.length);
-    const newScores = [];
-    let message = '';
-    for (let i = 0; i < newChartData.length; i += 1) {
-      if(newChartData[i].uv < 30) {
-        message = "That's it?";
-      } else if (newChartData[i].uv < 50) {
-        message ='Harder!';
-      } else if (newChartData[i].uv < 75) {
-        message = "That's it!";
-      } else {
-        message = "You're on fire!";
-      }
-      newScores.push({
-        message: message,
-        value: Math.floor(newChartData[i].uv)
-      })
-    }
-    return newScores;
-  }
   
   return (
     <>
