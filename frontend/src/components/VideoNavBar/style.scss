@@ -1,0 +1,57 @@
+.video-nav-bar {
+  
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 10vh;
+  position: relative;
+
+  a {
+    margin-left: 3vw;
+    height: 50%;
+  }
+
+  .logo {
+    height: 100%;
+  }
+
+  .workout-name {
+    font-family: Montserrat, sans-serif;
+    height: 25%;
+    border-left: 2px solid black;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    margin-left: 20px;
+    font-size: 22.5px;
+  }
+
+  .right {
+    position: absolute;
+    right: 3vw;
+
+    .timer {
+      font-family: Monument;
+      font-size: 22.5px;
+    }
+    .end-session {
+      background-color: white;
+      font-size: 22.5px;
+      font-family: Montserrat, sans-serif;
+      border: 2px solid #333333;
+      border-radius: 12px;
+      padding: 10px 20px;
+      transition: 0.5s;
+
+      &:hover {
+        cursor: pointer;
+        color: white;
+        background-color: #333333;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

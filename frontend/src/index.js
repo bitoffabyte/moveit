@@ -7,6 +7,12 @@ import WorkoutPage from 'pages/WorkoutPage';
 import 'index.scss';
 import PoseEstimation from 'components/VideoCall/PoseEstimation';
 
+import socketIOClient from 'socket.io-client';
+
+const ENDPOINT = 'https://citrus-moveit.herokuapp.com/';
+const socket = socketIOClient(ENDPOINT);
+
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>
@@ -15,7 +21,7 @@ ReactDOM.render(
           <PoseEstimation />
         </Route>
         <Route path="/workout">
-          <WorkoutPage />
+          <WorkoutPage socket={socket}/>
         </Route>
         <Route path="/home">
             <HomePage />

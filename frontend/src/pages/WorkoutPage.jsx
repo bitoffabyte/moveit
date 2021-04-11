@@ -1,8 +1,22 @@
-import VideoCall from 'components/VideoCall';
+import React from 'react';
 
-const WorkoutPage  = () => { 
+import VideoCall from 'components/VideoCall';
+import VideoNavBar from 'components/VideoNavBar';
+
+const WorkoutPage  = (props) => { 
+
+  const [currentTime, setCurrentTime] = React.useState(0);
+  const startTimer = () => {
+    setInterval(() => {
+      setCurrentTime(time => time + 1);
+    }, 1000);
+  }
+
   return (
-    <VideoCall />
+    <>
+      <VideoNavBar currentTime={currentTime}/>
+      <VideoCall socket={props.socket} startTimer={startTimer}/>
+    </>
   )
 }
 
