@@ -16,6 +16,8 @@ const squatJoints = ["leftKnee", "leftHip", "rightHip", "rightKnee"];
 const curlJoints = ["leftShoulder", "leftElbow", "rightShoulder", "rightElbow", "leftWrist", "rightWrist"];
 const jjJoints = ["leftShoulder", "leftElbow", "rightShoulder", "rightElbow"];
 
+const faceParts = ["leftEar", "leftEye", "rightEar", "rightEye", "nose"];
+
 const PoseEstimation = (props) => {
     const videoRef = useRef(); 
     const [poses, setPoses] = useState([]);    
@@ -72,13 +74,16 @@ const PoseEstimation = (props) => {
             };
             if (props.socket) {
                 props.socket.emit('sendKeypoints', data);
+                props.socket.emit('setExercise', {
+                    roomId: props.roomId,
+                    exercise: 'Squat'
+                });
             }
 
-            props.setCurrentExercise("Squat");
-            props.socket.emit('setExercise', {
-                roomId: props.roomId,
-                exercise: 'Squat'
-            });
+            if (props.setCurrentExercise) {
+                props.setCurrentExercise("Squat");
+            }
+
             return true; 
         }
 
@@ -232,11 +237,16 @@ const PoseEstimation = (props) => {
                 const keypoint = pose.keypoints[j];
                 // Only draw an ellipse is the pose probability is bigger than 0.2
                 if (keypoint.score > minPoseConfidence) {
-                    p5.fill(255, 255, 255);
-                    p5.noStroke();
-                    const positionX = (keypoint.position.x / 640) * canvasWidth;
-                    const positionY = (keypoint.position.y / 480) *  canvasHeight;
-                    p5.ellipse(positionX, positionY, 15, 15);
+
+                    // hiding the face dots
+                    if (!faceParts.some((el) => el === keypoint.part)) {
+                        p5.fill(255, 255, 255);
+                        p5.noStroke();
+                        const positionX = (keypoint.position.x / 640) * canvasWidth;
+                        const positionY = (keypoint.position.y / 480) *  canvasHeight;
+                        p5.ellipse(positionX, positionY, 15, 15);
+                    }
+
 
                     if (squatJoints.some((part) => part === keypoint.part)) {
                         squatCoords[keypoint.part] = keypoint;
@@ -291,10 +301,10 @@ const PoseEstimation = (props) => {
                         }
                     }
                 }
-            }
         }
+        
 
-        if (standingStatus && (currentExercise === "resting" || currentExercise === "jumping jack")) {
+        if (standingStatus) {
             const isJJ = jjDetection(jjCoords);
             if (isJJ) {
                 setCurrentExerciseDuration(0);
@@ -310,7 +320,7 @@ const PoseEstimation = (props) => {
                 }
             }
         }
-	};
+    }
 
     return (
         <>
