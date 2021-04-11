@@ -225,9 +225,9 @@ const PoseEstimation = () => {
 	};
 
     return (
-        <div>
+        <>
             {/* <h3>Current Exercise: {currentExercise}</h3> */}
-            <Sketch setup={setup} draw={draw} />;
+            <Sketch setup={setup} draw={draw} />
             {/* <h3>Number of Squats: {squatsCount}</h3> */}
             {/* <h3>Squats State: {squatsState}</h3>
             <h3>Squats Left Angle: {leftSquatAngle}</h3>
@@ -236,7 +236,7 @@ const PoseEstimation = () => {
             {/* <h3>Curls State: {curlsState}</h3> */}
             {/* <h3>Curls Left Angle: {leftCurlAngle}</h3>
             <h3>Curls Right Angle: {rightCurlAngle}</h3>  */}
-        </div>
+        </>
     )
 }
 

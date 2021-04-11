@@ -7,6 +7,9 @@ import { AreaChart, Area } from "recharts";
 import Biceps from '../../assets/biceps.svg';
 import Legs from '../../assets/legs.svg';
 import Shoulders from '../../assets/shoulders.svg';
+import Profile from '../../assets/profile.svg';
+import Microphone from '../../assets/microphone.svg';
+import Video from '../../assets/video.svg';
 
 import './style.scss';
 
@@ -173,89 +176,102 @@ const VideoCall = (props) => {
   return (
     <>
       <div className="videos">
-        <span>
-          <video ref={remoteVideo} autoPlay playsInline />
-        </span>
-        <span>
+        <div className="local-video">
+          <div className="microphone-button">
+            <img src={Microphone} alt="Microphone" className="icon" />
+          </div>
+          <div className="video-button">
+            <img src={Video} alt="Video" className="icon" />
+          </div>
           <PoseEstimation socket={props.socket} roomId={roomId}/>
-        </span>
-        <span>
-        <div className="title">Live Statistics</div>
-        <div className="statistics">
-          <div className="performance">
-            <p className="title">Avg Performance</p>
-            <p className="description">Based off similarity</p>
-            <p className="score">76</p>
-            <AreaChart width={239} height={100} data={data} margin={{top: 0, left: 0, right: 0, bottom: 0}} >
-              <Area type="monotone" dataKey="uv" stroke="#FFA768" fill="#FFA768" dot />
-            </AreaChart>
-          </div>
-          <div className="workout">
-            <p className="title">Workout Count</p>
-            <div className="split">
-              <p className="col-name">Type</p>
-              <p className="col-name">Reps</p>
-            </div>
-            <div className="split">
-              <p className="data-name">Arm Stretch</p>
-              <p className="data-value">15x</p>
-            </div>
-            <div className="divider" />
-            <div className="split">
-              <p className="data-name">Bicep Curls</p>
-              <p className="data-value">12x</p>
-            </div>
-            <div className="divider" />
-            <div className="split">
-              <p className="data-name">Jumping Jacks</p>
-              <p className="data-value">32x</p>
-            </div>
-            <div className="divider" />
-            <div className="split">
-              <p className="data-name">Pushups</p>
-              <p className="data-value">50x</p>
-            </div>
-          </div>
-          <div className="row">
-            <div className="active">
-              <p className="title">Active Time</p>
-              <p className="description">This Session</p>
-              <p className="time">42m</p>
-            </div>
-            <div className="calories">
-              <p className="title">Calories Burned</p>
-              <p className="description">This Session</p>
-              <p className="count">312cal</p>
-            </div>
-          </div>
-          <div className="areas">
-            <p className="title">Top Set Scores</p>
-            <div className="items">
-              <div className="item">
-                <img src={Biceps} alt="Biceps" />
-                <div>
-                  <p className="rank">#1</p>
-                  <p className="name">Biceps</p>
-                </div>
-              </div>
-              <div className="item">
-                <img src={Legs} alt="Legs" />
-                <div>
-                  <p className="rank">#2</p>
-                  <p className="name">Legs</p>
-                </div>
-              </div>
-              <div className="item">
-                <img src={Shoulders} alt="Shoulders" />
-                <div>
-                  <p className="rank">#3</p>
-                  <p className="name">Shoulders</p>
-                </div>
-              </div>
-            </div>
-            </div>
         </div>
-        </span>
+        <div className="remote-video">
+          <div className="instructor-tag">
+              <img src={Profile} alt="Profile" className="icon" />
+              <div>
+                <p className="title">Instructor</p>
+                <p className="name">Sarah Lee</p>
+              </div>
+            </div>
+          <video ref={remoteVideo} autoPlay playsInline />
+        </div>
+        <div className="stats-container">
+          <div className="title">Live Statistics</div>
+          <div className="statistics">
+            <div className="performance">
+              <p className="title">Avg Performance</p>
+              <p className="description">Based off similarity</p>
+              <p className="score">76</p>
+              <AreaChart width={239} height={100} data={data} margin={{top: 0, left: 0, right: 0, bottom: 0}} >
+                <Area type="monotone" dataKey="uv" stroke="#FFA768" fill="#FFA768" dot />
+              </AreaChart>
+            </div>
+            <div className="workout">
+              <p className="title">Workout Count</p>
+              <div className="split">
+                <p className="col-name">Type</p>
+                <p className="col-name">Reps</p>
+              </div>
+              <div className="split">
+                <p className="data-name">Arm Stretch</p>
+                <p className="data-value">15x</p>
+              </div>
+              <div className="divider" />
+              <div className="split">
+                <p className="data-name">Bicep Curls</p>
+                <p className="data-value">12x</p>
+              </div>
+              <div className="divider" />
+              <div className="split">
+                <p className="data-name">Jumping Jacks</p>
+                <p className="data-value">32x</p>
+              </div>
+              <div className="divider" />
+              <div className="split">
+                <p className="data-name">Pushups</p>
+                <p className="data-value">50x</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="active">
+                <p className="title">Active Time</p>
+                <p className="description">This Session</p>
+                <p className="time">42m</p>
+              </div>
+              <div className="calories">
+                <p className="title">Calories Burned</p>
+                <p className="description">This Session</p>
+                <p className="count">312cal</p>
+              </div>
+            </div>
+            <div className="areas">
+              <p className="title">Top Set Scores</p>
+              <div className="items">
+                <div className="item">
+                  <img src={Biceps} alt="Biceps" />
+                  <div>
+                    <p className="rank">#1</p>
+                    <p className="name">Biceps</p>
+                  </div>
+                </div>
+                <div className="item">
+                  <img src={Legs} alt="Legs" />
+                  <div>
+                    <p className="rank">#2</p>
+                    <p className="name">Legs</p>
+                  </div>
+                </div>
+                <div className="item">
+                  <img src={Shoulders} alt="Shoulders" />
+                  <div>
+                    <p className="rank">#3</p>
+                    <p className="name">Shoulders</p>
+                  </div>
+                </div>
+              </div>
+              </div>
+          </div>
+        </div>
       </div>
     </>
   );
