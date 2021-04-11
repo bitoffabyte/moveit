@@ -105,7 +105,9 @@ const VideoCall = (props) => {
       });
     };
 
-    remoteVideo.current.srcObject = remoteStream;
+    if (remoteVideo.current) {
+      remoteVideo.current.srcObject = remoteStream;
+    }
 
     // Check if we should create or join a call
     firestore
