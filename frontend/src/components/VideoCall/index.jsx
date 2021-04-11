@@ -15,7 +15,7 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-const VideoCall = () => {
+const VideoCall = (props) => {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
@@ -63,7 +63,7 @@ const VideoCall = () => {
         const offerCandidates = callDoc.collection('offerCandidates');
         const answerCandidates = callDoc.collection('answerCandidates');
     
-        console.log(callDoc.id);
+        props.socket.emit('joinRoom', callDoc.id);
     
         pc.onicecandidate = (event) => {
           if (event.candidate) {
@@ -134,7 +134,10 @@ const VideoCall = () => {
               }
             });
           });
+          props.startTimer();
           callDoc.delete();
+
+          props.socket.emit('joinRoom', doc.id);
         });
       }
     });
@@ -144,11 +147,9 @@ const VideoCall = () => {
     <>
       <div className="videos">
         <span>
-          <h3>Local Stream</h3>
           <PoseEstimation />
         </span>
         <span>
-          <h3>Remote Stream</h3>
           <video ref={remoteVideo} autoPlay playsInline />
         </span>
       </div>
