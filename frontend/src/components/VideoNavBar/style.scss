@@ -1,4 +1,5 @@
 .video-nav-bar {
+  
   display: flex;
   align-items: center;
   width: 100vw;
@@ -28,6 +29,11 @@
   .right {
     position: absolute;
     right: 3vw;
+
+    .timer {
+      font-family: Monument;
+      font-size: 22.5px;
+    }
     .end-session {
       background-color: white;
       font-size: 22.5px;

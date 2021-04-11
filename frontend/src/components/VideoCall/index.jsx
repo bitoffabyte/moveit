@@ -15,7 +15,7 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-const VideoCall = () => {
+const VideoCall = (props) => {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
@@ -134,6 +134,7 @@ const VideoCall = () => {
               }
             });
           });
+          props.startTimer();
           callDoc.delete();
         });
       }
