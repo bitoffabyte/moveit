@@ -11,7 +11,10 @@ export const checkSquatStanding = (angle) => angle > 65 && angle < 100;
 export const checkSquatDown = (angle) => angle > 135;
 
 export const checkCurlRest = (angle) => angle > 125 || angle < 20; 
-export const checkCurlActive = (angle) => angle < 70 && angle > 20;
+export const checkCurlActive = (angle) => angle < 85 && angle > 20;
+
+export const checkJJUp = (angle) => angle > 125 || angle < 20; 
+export const checkJJDown = (angle) => angle < 85 && angle > 20;
 
 export const average = (listOfNums) => listOfNums.reduce((acc, val) => {
   acc += val;
