@@ -1,8 +1,12 @@
 import VideoCall from 'components/VideoCall';
+import VideoNavBar from 'components/VideoNavBar';
 
 const WorkoutPage  = () => { 
   return (
-    <VideoCall />
+    <>
+      <VideoNavBar />
+      <VideoCall />
+    </>
   )
 }
 

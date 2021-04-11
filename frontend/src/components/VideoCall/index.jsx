@@ -144,11 +144,9 @@ const VideoCall = () => {
     <>
       <div className="videos">
         <span>
-          <h3>Local Stream</h3>
           <PoseEstimation />
         </span>
         <span>
-          <h3>Remote Stream</h3>
           <video ref={remoteVideo} autoPlay playsInline />
         </span>
       </div>

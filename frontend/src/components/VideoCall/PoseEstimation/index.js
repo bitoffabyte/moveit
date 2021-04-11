@@ -117,11 +117,7 @@ const PoseEstimation = () => {
 
     return (
         <div>
-            <Sketch setup={setup} draw={draw} />;
-            <p>Left Thigh Angle: {leftThighAngle}</p>
-            <p>Right Thigh Angle: {rightThighAngle}</p>
-            <p>Number of Squats: {squatsCount}</p>
-            <p>Squats State: {squatsState}</p>
+            <Sketch setup={setup} draw={draw} />
         </div>
     )
 }
