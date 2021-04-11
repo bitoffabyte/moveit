@@ -60,7 +60,8 @@ const PoseEstimation = (props) => {
             setSquatsCount(squatsCount + 1);
             const data = {
                 roomId: props.roomId,
-                keypoints: lastKeypoints
+                keypoints: lastKeypoints,
+                exerciseType: "squat"
             };
             props.socket.emit('sendKeypoints', data);
 
@@ -120,7 +121,8 @@ const PoseEstimation = (props) => {
             setCurlsCount(curlsCount + 1);
             const data = {
                 roomId: props.roomId,
-                keypoints: lastKeypoints
+                keypoints: lastKeypoints,
+                exerciseType: "curl"
             };
             props.socket.emit('sendKeypoints', data);
 
