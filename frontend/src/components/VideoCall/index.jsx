@@ -173,7 +173,7 @@ const VideoCall = (props) => {
       })
   }, []);
 
-  const data = [
+  const performacePoints = [
     { uv: 29.28 },
     { uv: 45.62 },
     { uv: 38.36 },
@@ -192,6 +192,14 @@ const VideoCall = (props) => {
     { uv: 64.29 },
   ];
 
+  const scores = [
+    {message: 'NOT VISIBLE', value: 10},
+    {message: 'NOT VISIBLE', value: 20},
+    {message: 'Harder!', value: 31},
+    {message: 'Work on it more!', value: 73},
+    {message: 'You’re on fire!', value: 93},
+  ];
+  
   return (
     <>
       <div className="videos">
@@ -217,6 +225,17 @@ const VideoCall = (props) => {
             </div>
           </div>
           <div className="remote-video">
+            <div className="scores">
+              {scores.map((score) => (
+                <div className="score">
+                  <div className="col"> 
+                    <p className="value">{score.value}</p>
+                    <p className="word">Score</p>
+                  </div>
+                  <p className="message">{score.message}</p>
+                </div>
+              ))}
+            </div>
             <div className="microphone-button">
               <img src={Microphone} alt="Microphone" className="icon" />
             </div>
@@ -241,7 +260,7 @@ const VideoCall = (props) => {
               <AreaChart
                 width={450}
                 height={125}
-                data={data}
+                data={performacePoints}
                 margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
               >
                 <Area
