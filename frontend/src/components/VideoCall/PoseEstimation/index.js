@@ -43,7 +43,7 @@ const PoseEstimation = () => {
     const setup = (p5, canvasParentRef) => {
 		// use parent to render the canvas in this ref
 		// (without that p5 will render the canvas outside of your component)
-		p5.createCanvas(640, 480).parent(canvasParentRef);
+		p5.createCanvas(window.innerHeight * 1.11, window.innerHeight * 0.83).parent(canvasParentRef);
 
         const capture = p5.createCapture({
             video: true,
@@ -65,7 +65,7 @@ const PoseEstimation = () => {
 	};
 
 	const draw = (p5) => {
-        p5.image(videoRef.current, 0, 0, 640, 480)
+        p5.image(videoRef.current, 0, 0, window.innerHeight * 1.11, window.innerHeight * 0.83);
 
         const squatCoords = {} 
 
@@ -80,7 +80,9 @@ const PoseEstimation = () => {
                 if (keypoint.score > minPoseConfidence) {
                     p5.fill(255, 255, 255);
                     p5.noStroke();
-                    p5.ellipse(keypoint.position.x, keypoint.position.y, 15, 15);
+                    const positionX = (keypoint.position.x / 640) * window.innerHeight * 1.11;
+                    const positionY = (keypoint.position.y / 480) *  window.innerHeight * 0.83;
+                    p5.ellipse(positionX, positionY, 15, 15);
 
                     if (keypoint.part === "leftKnee" || keypoint.part === "leftHip" || keypoint.part === "rightKnee" || keypoint.part === "rightHip") {
                         squatCoords[keypoint.part] = keypoint.position;
@@ -97,9 +99,13 @@ const PoseEstimation = () => {
             for (let j = 0; j < skeleton.length; j += 1) {
                 const partA = skeleton[j][0];
                 const partB = skeleton[j][1];
+                const positionXA = (partA.position.x / 640) * window.innerHeight * 1.11;
+                const positionYA = (partA.position.y / 480) *  window.innerHeight * 0.83;
+                const positionXB = (partB.position.x / 640) * window.innerHeight * 1.11;
+                const positionYB = (partB.position.y / 480) *  window.innerHeight * 0.83;
                 p5.strokeWeight(8);
                 p5.stroke(255, 255, 255);
-                p5.line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
+                p5.line( positionXA, positionYA, positionXB, positionYB);
             }
         }
 
