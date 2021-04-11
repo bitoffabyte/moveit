@@ -211,9 +211,12 @@ const VideoCall = (props) => {
       props.socket.on('confidenceScore', data => {
         console.log('found new score');
         console.log(data);
-        const newChartData = [...chartData];
-        newChartData.push({uv: data});
-        setChartData(chart => newChartData);
+
+        setChartData(chart => {
+          const newChartData = [...chart];
+          newChartData.push({uv: data});
+          return newChartData;
+        });
       })
   }, []);
 
