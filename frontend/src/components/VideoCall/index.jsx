@@ -323,7 +323,7 @@ const VideoCall = (props) => {
               <p className="title">Avg Performance</p>
               <p className="description">Based off similarity</p>
               <p className="score">{
-                average(chartData.slice(5, chartData.length)) || 0
+                Math.floor(average(chartData.slice(5, chartData.length))) || 0
               }</p>
               <AreaChart
                 width={450}
