@@ -141,7 +141,7 @@ module.exports = async (io, client) => {
           confidenceScore = (45*(1/leftDiff)) + (45*(1/rightDiff)) + (.1*(cosineSimilarity))
         }
         */
-        client.to(data.roomId).emit('confidenceScore', confidenceScore);
+        client.nsp.to(data.roomId).emit('confidenceScore', confidenceScore);
       }
       }
     }

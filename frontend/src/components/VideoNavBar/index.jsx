@@ -13,7 +13,7 @@ const VideoNavBar = (props) => {
         Interval Training with Steven Steiner
       </span>
       <div className="right">
-        <span className="timer">0m {props.currentTime}s</span>
+        <span className="timer">{Math.floor(props.currentTime / 60)}m {props.currentTime % 60}s</span>
         <NavLink to="/home">
           <button className="end-session">
             End Session

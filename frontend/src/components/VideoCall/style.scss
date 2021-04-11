@@ -63,6 +63,34 @@
     }
   }
 
+  .remote-exercise {
+    z-index: 2;
+    height: 60px;
+    width: 14vw;
+    //background-color: white;
+    position: absolute;
+    right: 5px;
+    top: -10px;
+    border: double 5px transparent;
+    border-radius: 10px;
+    background-image: linear-gradient(white, white), 
+                      linear-gradient(180deg, #FF4444 0%, #F57A21 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+
+    p {
+      margin: 10px;
+      margin-bottom: 5px;
+      font-size: 9px;
+    }
+
+    .current-exercise {
+      margin-top: 0px !important;
+      font-size: 20px;
+      font-weight: 700;
+    }
+  }
+
   .video-button {
     cursor: pointer;
     position: absolute;

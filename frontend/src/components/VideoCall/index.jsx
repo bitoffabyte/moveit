@@ -23,9 +23,43 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
+const average = arr => arr.reduce((sume, el) => sume + el.uv, 0) / arr.length;
+
+const exerciseCount = {};
+let interval = null;
 const VideoCall = (props) => {
   const [currentExercise, setCurrentExercise] = React.useState('Resting');
   const [remoteExercise, setRemoteExercise] = React.useState('Resting');
+  const [calories, setCalories] = React.useState(0);
+  const [time, setTime] = React.useState(0);
+  const [chartData, setChartData] = React.useState([
+    { uv: 50 },
+    { uv: 50 },
+    { uv: 50 },
+    { uv: 50 },
+    { uv: 50 },
+  ]);
+
+  const setCurrentExerciseTwo = (exercise) => {
+    if (exercise !== 'Resting') {
+      interval=setInterval(() => {
+        setTime(time => time + 0.1);
+      }, 100);
+      if (exercise in exerciseCount) {
+        exerciseCount[exercise] += 1
+      } else {
+        exerciseCount[exercise] = 0;
+      }
+      if (exercise === 'Jumping Jack') {
+        setCalories(calories + 0.5);
+      } else if (exercise === 'Squat') {
+        setCalories(calories + 0.24);
+      }
+    } else if (interval) {
+      clearInterval(interval);
+    }
+    setCurrentExercise(exercise);
+  }
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -171,6 +205,13 @@ const VideoCall = (props) => {
         setRemoteExercise(exercise => data);
         console.log(data);
       })
+      props.socket.on('confidenceScore', data => {
+        console.log('found new score');
+        console.log(data);
+        const newChartData = [...chartData];
+        newChartData.push({uv: data});
+        setChartData(chart => newChartData);
+      })
   }, []);
 
   const data = [
@@ -211,7 +252,7 @@ const VideoCall = (props) => {
               <img src={Video} alt="Video" className="icon" />
             </div>
             <video ref={remoteVideo} autoPlay playsInline />
-            <div className="local-exercise">
+            <div className="remote-exercise">
               <p>Current Exercise</p>
               <p className="current-exercise">{remoteExercise}</p>
             </div>
@@ -228,7 +269,7 @@ const VideoCall = (props) => {
               <p>Current Exercise</p>
               <p className="current-exercise">{currentExercise}</p>
             </div>
-            <PoseEstimation socket={props.socket} roomId={roomId} setCurrentExercise={setCurrentExercise}/>
+            <PoseEstimation socket={props.socket} roomId={roomId} setCurrentExercise={setCurrentExerciseTwo}/>
           </div>
         </div>
         <div className="stats-container">
@@ -237,11 +278,13 @@ const VideoCall = (props) => {
             <div className="performance">
               <p className="title">Avg Performance</p>
               <p className="description">Based off similarity</p>
-              <p className="score">76</p>
+              <p className="score">{
+                average(chartData.slice(5, chartData.length)) || 0
+              }</p>
               <AreaChart
                 width={450}
                 height={125}
-                data={data}
+                data={chartData.slice(chartData.length - 5, chartData.length)}
                 margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
               >
                 <Area
@@ -259,59 +302,53 @@ const VideoCall = (props) => {
                 <p className="col-name">Type</p>
                 <p className="col-name">Reps</p>
               </div>
-              <div className="split">
-                <p className="data-name">Arm Stretch</p>
-                <p className="data-value">15x</p>
-              </div>
-              <div className="divider" />
-              <div className="split">
-                <p className="data-name">Bicep Curls</p>
-                <p className="data-value">12x</p>
-              </div>
-              <div className="divider" />
-              <div className="split">
-                <p className="data-name">Jumping Jacks</p>
-                <p className="data-value">32x</p>
-              </div>
-              <div className="divider" />
-              <div className="split">
-                <p className="data-name">Pushups</p>
-                <p className="data-value">50x</p>
-              </div>
+              {
+                Object.keys(exerciseCount).map(function(key) {
+                  return (
+                    <>
+                    <div className="split">
+                      <p className="data-name">{key}</p>
+                      <p className="data-value">{exerciseCount[key]}x</p>
+                    </div>
+                    <div className="divider" /> 
+                    </>
+                  )
+                })
+              }
             </div>
             <div className="row">
               <div className="active">
                 <p className="title">Active Time</p>
                 <p className="description">This Session</p>
-                <p className="time">42m</p>
+                <p className="time">{Math.floor(time)}s</p>
               </div>
               <div className="calories">
                 <p className="title">Calories Burned</p>
                 <p className="description">This Session</p>
-                <p className="count">312cal</p>
+                <p className="count">{Math.floor(calories)} cal</p>
               </div>
             </div>
             <div className="areas">
-              <p className="title">Top Set Scores</p>
+              <p className="title">Personal Records</p>
               <div className="items">
                 <div className="item">
                   <img src={Biceps} alt="Biceps" />
                   <div>
-                    <p className="rank">#1</p>
+                    <p className="rank">93</p>
                     <p className="name">Biceps</p>
                   </div>
                 </div>
                 <div className="item">
                   <img src={Legs} alt="Legs" />
                   <div>
-                    <p className="rank">#2</p>
+                    <p className="rank">81</p>
                     <p className="name">Legs</p>
                   </div>
                 </div>
                 <div className="item">
                   <img src={Shoulders} alt="Shoulders" />
                   <div>
-                    <p className="rank">#3</p>
+                    <p className="rank">72</p>
                     <p className="name">Shoulders</p>
                   </div>
                 </div>
