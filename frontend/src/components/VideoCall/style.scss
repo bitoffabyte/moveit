@@ -217,6 +217,7 @@
       position: absolute;
       bottom: 16px;
       left: calc(1.5vw + 16px);
+      z-index: 1;
 
       .score {
         width: 127px;
