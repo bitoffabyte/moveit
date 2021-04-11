@@ -204,16 +204,13 @@ const VideoCall = (props) => {
         }
       });
       props.socket.on('newExercise', data => {
-        console.log('detected new exercise')
         setRemoteExercise(exercise => data);
-        console.log(data);
       })
       props.socket.on('confidenceScore', data => {
         console.log('found new score');
-        console.log(data);
         const newChartData = [...chartData];
         newChartData.push({uv: data});
-        setChartData(chart => newChartData);
+        setChartData(newChartData);
       })
   }, []);
 
@@ -245,7 +242,6 @@ const VideoCall = (props) => {
   ];
 
   const generateScores = (chartDataScores) => {
-    console.log(chartDataScores);
     const newChartData = chartDataScores.slice(chartDataScores.length - 3, chartDataScores.length);
     const newScores = [];
     let message = '';
@@ -285,7 +281,7 @@ const VideoCall = (props) => {
             <div className="video-button">
               <img src={Video} alt="Video" className="icon" />
             </div>
-            <video ref={remoteVideo} autoPlay playsInline />
+            <video ref={remoteVideo} autoPlay playsInline className="video"/>
             <div className={`local-exercise ${remoteExercise === "Resting" ? ' resting' : ' active'}`}>
               <p>Current Exercise</p>
               <p className="current-exercise">{remoteExercise}</p>
