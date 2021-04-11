@@ -6,6 +6,21 @@
   justify-content: space-between;
   padding: 0 1.8vw;
 
+  .super-border {
+    z-index: 10000000;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    box-sizing: border-box;
+    border: double 8px transparent;
+
+    border-image-slice: 1;
+    border-width: 8px;
+  }
+
   video {
     background: #333333;
     border-radius: 20px;

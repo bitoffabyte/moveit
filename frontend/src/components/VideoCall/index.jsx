@@ -40,6 +40,7 @@ const VideoCall = (props) => {
     { uv: 50 },
   ]);
   const [currentScores, setScores] = React.useState([]);
+  const [borderStyle, setBorderStyle] = React.useState('linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 0%)');
 
   const setCurrentExerciseTwo = (exercise) => {
     if (exercise !== 'Resting') {
@@ -210,6 +211,22 @@ const VideoCall = (props) => {
       props.socket.on('confidenceScore', data => {
         console.log('found new score');
         console.log(data);
+        if (data > 74 ) {
+          setBorderStyle(style => 'linear-gradient(180deg, #23FF53 0%, #03BFFF 100%)');
+          setTimeout(() => {
+            setBorderStyle(style => 'linear-gradient(180deg, #23FF53 0%, #03BFFF 0%)');
+          }, 3000);
+        } else if (data > 49 ) {
+          setBorderStyle(style => 'linear-gradient(180deg, #7A4CFD 0%, #FF4752 100%)');
+          setTimeout(() => {
+            setBorderStyle(style => 'linear-gradient(180deg, #23FF53 0%, #03BFFF 0%)');
+          }, 3000);
+        } else {
+          setBorderStyle(style => 'linear-gradient(180deg, #FF2323 0%, #FFA959 100%)');
+          setTimeout(() => {
+            setBorderStyle(style => 'linear-gradient(180deg, #23FF53 0%, #03BFFF 0%)');
+          }, 3000);
+        }
 
         setChartData(chart => {
           const newChartData = [...chart];
@@ -238,6 +255,7 @@ const VideoCall = (props) => {
           return newScores;
         });
       })
+      
   }, []);
   
   return (
@@ -376,6 +394,7 @@ const VideoCall = (props) => {
             </div>
           </div>
         </div>
+        <div className="super-border" style={{borderImageSource: borderStyle}}></div>
       </div>
     </>
   );
