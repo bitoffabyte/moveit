@@ -174,10 +174,10 @@ const VideoCall = (props) => {
     <>
       <div className="videos">
         <span>
-          <PoseEstimation socket={props.socket} roomId={roomId}/>
+          <video ref={remoteVideo} autoPlay playsInline />
         </span>
         <span>
-          <video ref={remoteVideo} autoPlay playsInline />
+          <PoseEstimation socket={props.socket} roomId={roomId}/>
         </span>
         <span>
         <div className="title">Live Statistics</div>
