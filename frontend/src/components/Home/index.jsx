@@ -5,7 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import SessionCard from '../SessionCard';
 import InstructorCard from '../InstructorCard';
 
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.svg';
 import Profile from '../../assets/profile.png';
 
 import Biceps from '../../assets/biceps.svg';
