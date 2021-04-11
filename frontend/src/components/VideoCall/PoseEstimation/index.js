@@ -189,7 +189,13 @@ const PoseEstimation = (props) => {
                 props.socket.emit('sendKeypoints', data);
             }
 
-            setCurrentExercise("jumping jack");
+            props.setCurrentExercise("Jumping Jack");
+            if (props.socket) {
+                props.socket.emit('setExercise', {
+                    roomId: props.roomId,
+                    exercise: 'Jumping Jack'
+                });
+            }
             return true; 
         }
     }
