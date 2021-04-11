@@ -4,7 +4,7 @@ import VideoCall from 'components/VideoCall';
 import VideoNavBar from 'components/VideoNavBar';
 
 const WorkoutPage  = (props) => { 
-
+  
   const [currentTime, setCurrentTime] = React.useState(0);
   const startTimer = () => {
     setInterval(() => {

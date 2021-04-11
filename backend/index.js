@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.send(`Moveit Backend`));
 // app.use('/api', require('./routes/general')); // api
 
-const SERVER_PORT = (process.env.PORT || 3000);
+const SERVER_PORT = (process.env.PORT || 3001);
 const server = app.listen(SERVER_PORT, () => console.log(`Server started on port ${SERVER_PORT}.`));
 
 // set up our socket server connection
