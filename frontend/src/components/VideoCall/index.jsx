@@ -49,7 +49,7 @@ const VideoCall = (props) => {
       if (exercise in exerciseCount) {
         exerciseCount[exercise] += 1
       } else {
-        exerciseCount[exercise] = 0;
+        exerciseCount[exercise] = 1;
       }
       if (exercise === 'Jumping Jack') {
         setCalories(calories + 0.5);
