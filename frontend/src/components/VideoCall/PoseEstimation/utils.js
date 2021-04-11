@@ -10,8 +10,8 @@ export const angle = (P1, P2, P3) => {
 export const checkSquatStanding = (angle) => angle > 65 && angle < 100;
 export const checkSquatDown = (angle) => angle > 135;
 
-export const checkCurlRest = (angle) => angle > 140 && angle < 170; 
-export const checkCurlActive = (angle) => angle < 60 && angle !== 0;
+export const checkCurlRest = (angle) => angle > 125 || angle < 20; 
+export const checkCurlActive = (angle) => angle < 70 && angle > 20;
 
 export const average = (listOfNums) => listOfNums.reduce((acc, val) => {
   acc += val;
@@ -50,13 +50,37 @@ export const isCurlPosition = (keypoints) => {
   if (!leftShoulder || !rightShoulder) {
     return false; 
   }
+
+  return Math.abs(leftShoulder.x - rightShoulder.x) < 50;
 };
 
-export const findExercise = (keypoints) => {
-  
-  if (isSquatPosition(keypoints)) {
-    return "squat";
+export const isStanding = (keypoints) => {
+  const leftKnee = keypoints["leftKnee"]
+  const leftHip = keypoints["leftHip"]
+
+  const rightKnee = keypoints["rightKnee"]
+  const rightHip = keypoints["rightHip"]
+
+  if (!leftKnee || !leftHip || !rightKnee || !rightHip) {
+    return false; 
   }
 
-  return undefined
+  return Math.abs(rightKnee.position.y - rightHip.position.y) > 20 || Math.abs(leftKnee.position.y - leftHip.position.y) > 20;
+}
+
+export const isSitting = (keypoints) => {
+  const leftKnee = keypoints["leftKnee"]
+  const leftHip = keypoints["leftHip"]
+
+  const rightKnee = keypoints["rightKnee"]
+  const rightHip = keypoints["rightHip"]
+
+  let dist1 = rightKnee && rightHip ? Math.abs(rightKnee.position.y - rightHip.position.y) : 0; 
+  let dist2 = leftKnee && leftHip ? Math.abs(leftKnee.position.y - leftHip.position.y) : 0; 
+
+  if (dist1 === 0 && dist2 === 0) {
+    return false;
+  }
+
+  return dist1 < 20 || dist2 < 20;  
 }
