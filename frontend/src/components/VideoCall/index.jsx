@@ -314,7 +314,9 @@ const VideoCall = (props) => {
               <p>Current Exercise</p>
               <p className="current-exercise">{currentExercise}</p>
             </div>
-            <PoseEstimation socket={props.socket} roomId={roomId} setCurrentExercise={setCurrentExerciseTwo}/>
+            <div className="video">
+              <PoseEstimation socket={props.socket} roomId={roomId} setCurrentExercise={setCurrentExerciseTwo}/>
+            </div>
           </div>
         </div>
         <div className="stats-container">

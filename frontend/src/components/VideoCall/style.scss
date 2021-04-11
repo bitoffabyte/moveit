@@ -209,6 +209,10 @@
   .remote-video {
     position: relative;
 
+    .video {
+      transform: scaleX(-1);
+    }
+
     .scores {
       position: absolute;
       bottom: 16px;
