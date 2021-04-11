@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import PoseEstimation from './PoseEstimation';
-import { AreaChart, Area } from "recharts";
+import { AreaChart, Area } from 'recharts';
 
 import Biceps from '../../assets/biceps.svg';
 import Legs from '../../assets/legs.svg';
@@ -20,7 +20,7 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_MESSENGER_SENDER,
   appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 const VideoCall = (props) => {
@@ -32,7 +32,10 @@ const VideoCall = (props) => {
   const servers = {
     iceServers: [
       {
-        urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+        urls: [
+          'stun:stun1.l.google.com:19302',
+          'stun:stun2.l.google.com:19302',
+        ],
       },
     ],
     iceCandidatePoolSize: 10,
@@ -47,7 +50,10 @@ const VideoCall = (props) => {
   const [roomId, setRoomId] = React.useState('');
 
   React.useEffect(async () => {
-    localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    localStream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
     remoteStream = new MediaStream();
 
     // Push tracks from local stream to peer connection
@@ -65,93 +71,98 @@ const VideoCall = (props) => {
     remoteVideo.current.srcObject = remoteStream;
 
     // Check if we should create or join a call
-    firestore.collection('calls').get().then(async (querySnapshot) => {
-      // If there is no ongoing call, go ahead and create a new call.
-      if (querySnapshot.empty) {
-        const callDoc = firestore.collection('calls').doc();
-        const offerCandidates = callDoc.collection('offerCandidates');
-        const answerCandidates = callDoc.collection('answerCandidates');
-    
-        props.socket.emit('joinRoom', callDoc.id);
-        setRoomId(id => callDoc.id);
-    
-        pc.onicecandidate = (event) => {
-          if (event.candidate) {
-            offerCandidates.add(event.candidate.toJSON());
-          }
-        };
-    
-        const offerDescription = await pc.createOffer();
-        await pc.setLocalDescription(offerDescription);
-    
-        const offer = {
-          sdp: offerDescription.sdp,
-          type: offerDescription.type,
-        };
-    
-        await callDoc.set({ offer });
-    
-        callDoc.onSnapshot((snapshot) => {
-          const data = snapshot.data();
-          if (!pc.currentRemoteDescription && data && data.answer) {
-            const answerDescription = new RTCSessionDescription(data.answer);
-            pc.setRemoteDescription(answerDescription);
-          }
-        });
-    
-        answerCandidates.onSnapshot((snapshot) => {
-          snapshot.docChanges().forEach((change) => {
-            if (change.type === 'added') {
-              const candidate = new RTCIceCandidate(change.doc.data());
-              pc.addIceCandidate(candidate);
-            }
-          });
-        });
-      }
-      // If there is an ongoing call, go ahead and create a new call.
-      else {
-        querySnapshot.forEach(async (doc) => {
-          const callDoc = firestore.collection('calls').doc(doc.id);
-          const answerCandidates = callDoc.collection('answerCandidates');
+    firestore
+      .collection('calls')
+      .get()
+      .then(async (querySnapshot) => {
+        // If there is no ongoing call, go ahead and create a new call.
+        if (querySnapshot.empty) {
+          const callDoc = firestore.collection('calls').doc();
           const offerCandidates = callDoc.collection('offerCandidates');
+          const answerCandidates = callDoc.collection('answerCandidates');
+
+          props.socket.emit('joinRoom', callDoc.id);
+          setRoomId((id) => callDoc.id);
 
           pc.onicecandidate = (event) => {
             if (event.candidate) {
-              answerCandidates.add(event.candidate.toJSON());
+              offerCandidates.add(event.candidate.toJSON());
             }
           };
 
-          const callData = (await callDoc.get()).data();
+          const offerDescription = await pc.createOffer();
+          await pc.setLocalDescription(offerDescription);
 
-          const offerDescription = callData.offer;
-          await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
-
-          const answerDescription = await pc.createAnswer();
-          await pc.setLocalDescription(answerDescription);
-
-          const answer = {
-            type: answerDescription.type,
-            sdp: answerDescription.sdp,
+          const offer = {
+            sdp: offerDescription.sdp,
+            type: offerDescription.type,
           };
 
-          await callDoc.update({ answer });
+          await callDoc.set({ offer });
 
-          offerCandidates.onSnapshot((snapshot) => {
+          callDoc.onSnapshot((snapshot) => {
+            const data = snapshot.data();
+            if (!pc.currentRemoteDescription && data && data.answer) {
+              const answerDescription = new RTCSessionDescription(data.answer);
+              pc.setRemoteDescription(answerDescription);
+            }
+          });
+
+          answerCandidates.onSnapshot((snapshot) => {
             snapshot.docChanges().forEach((change) => {
               if (change.type === 'added') {
-                const data = change.doc.data();
-                pc.addIceCandidate(new RTCIceCandidate(data));
+                const candidate = new RTCIceCandidate(change.doc.data());
+                pc.addIceCandidate(candidate);
               }
             });
           });
-          props.startTimer();
-          callDoc.delete();
+        }
+        // If there is an ongoing call, go ahead and create a new call.
+        else {
+          querySnapshot.forEach(async (doc) => {
+            const callDoc = firestore.collection('calls').doc(doc.id);
+            const answerCandidates = callDoc.collection('answerCandidates');
+            const offerCandidates = callDoc.collection('offerCandidates');
 
-          props.socket.emit('joinRoom', doc.id);
-          setRoomId(id => doc.id);
-        });
-      }
-    });
+            pc.onicecandidate = (event) => {
+              if (event.candidate) {
+                answerCandidates.add(event.candidate.toJSON());
+              }
+            };
+
+            const callData = (await callDoc.get()).data();
+
+            const offerDescription = callData.offer;
+            await pc.setRemoteDescription(
+              new RTCSessionDescription(offerDescription)
+            );
+
+            const answerDescription = await pc.createAnswer();
+            await pc.setLocalDescription(answerDescription);
+
+            const answer = {
+              type: answerDescription.type,
+              sdp: answerDescription.sdp,
+            };
+
+            await callDoc.update({ answer });
+
+            offerCandidates.onSnapshot((snapshot) => {
+              snapshot.docChanges().forEach((change) => {
+                if (change.type === 'added') {
+                  const data = change.doc.data();
+                  pc.addIceCandidate(new RTCIceCandidate(data));
+                }
+              });
+            });
+            props.startTimer();
+            callDoc.delete();
+
+            props.socket.emit('joinRoom', doc.id);
+            setRoomId((id) => doc.id);
+          });
+        }
+      });
   }, []);
 
   const data = [
@@ -176,24 +187,33 @@ const VideoCall = (props) => {
   return (
     <>
       <div className="videos">
-        <div className="local-video">
-          <div className="microphone-button">
-            <img src={Microphone} alt="Microphone" className="icon" />
-          </div>
-          <div className="video-button">
-            <img src={Video} alt="Video" className="icon" />
-          </div>
-          <PoseEstimation socket={props.socket} roomId={roomId}/>
-        </div>
-        <div className="remote-video">
-          <div className="instructor-tag">
+        <div style={{ display: 'flex' }}>
+          <div className="local-video">
+            <div className="instructor-tag">
               <img src={Profile} alt="Profile" className="icon" />
               <div>
                 <p className="title">Instructor</p>
                 <p className="name">Sarah Lee</p>
               </div>
             </div>
-          <video ref={remoteVideo} autoPlay playsInline />
+            <div className="microphone-button">
+              <img src={Microphone} alt="Microphone" className="icon" />
+            </div>
+            <div className="video-button">
+              <img src={Video} alt="Video" className="icon" />
+            </div>
+            <video ref={remoteVideo} autoPlay playsInline />
+          </div>
+          <div className="remote-video">
+            <div className="microphone-button">
+              <img src={Microphone} alt="Microphone" className="icon" />
+            </div>
+            <div className="video-button">
+              <img src={Video} alt="Video" className="icon" />
+            </div>
+
+            <PoseEstimation socket={props.socket} roomId={roomId} />
+          </div>
         </div>
         <div className="stats-container">
           <div className="title">Live Statistics</div>
@@ -202,8 +222,19 @@ const VideoCall = (props) => {
               <p className="title">Avg Performance</p>
               <p className="description">Based off similarity</p>
               <p className="score">76</p>
-              <AreaChart width={239} height={100} data={data} margin={{top: 0, left: 0, right: 0, bottom: 0}} >
-                <Area type="monotone" dataKey="uv" stroke="#FFA768" fill="#FFA768" dot />
+              <AreaChart
+                width={450}
+                height={125}
+                data={data}
+                margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
+              >
+                <Area
+                  type="monotone"
+                  dataKey="uv"
+                  stroke="#FFA768"
+                  fill="#FFA768"
+                  dot
+                />
               </AreaChart>
             </div>
             <div className="workout">
@@ -269,7 +300,7 @@ const VideoCall = (props) => {
                   </div>
                 </div>
               </div>
-              </div>
+            </div>
           </div>
         </div>
       </div>

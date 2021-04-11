@@ -3,7 +3,8 @@
   align-items: center;
   // height: 90vh;
   // width: 75vw;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 1.8vw;
 
   video {
     background: #333333;
@@ -14,7 +15,45 @@
     object-fit: cover;
     object-position: center;
   }
+  .microphone-button {
+    cursor: pointer;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: 16px;
+    right: calc(1.5vw + 56px + 16px);
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15.0821px);
+    border-radius: 10.258px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .video-button {
+    cursor: pointer;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: 16px;
+    right: calc(1.5vw + 16px);
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15.0821px);
+    border-radius: 10.258px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
   .local-video {
     position: relative;
     .microphone-button {
@@ -57,46 +96,44 @@
       }
     }
   }
+  .instructor-tag {
+    position: absolute;
+    bottom: 24px;
+    left: 48px;
 
+    width: 132px;
+    height: 22px;
+    padding: 8px;
+
+    background: #ffffff;
+    border: 1px solid #000000;
+    backdrop-filter: blur(27px);
+    border-radius: 5px;
+
+    display: flex;
+    align-items: center;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+
+    .title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      color: #333333;
+    }
+
+    .name {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      color: #333333;
+    }
+  }
   .remote-video {
     position: relative;
-
-    .instructor-tag {
-      position: absolute;
-      bottom: 24px;
-      left: 48px;
-
-      width: 132px;
-      height: 22px;
-      padding: 8px;
-
-      background: #FFFFFF;
-      border: 1px solid #000000;
-      backdrop-filter: blur(27px);
-      border-radius: 5px;
-      
-      display: flex;
-      align-items: center;
-
-      .icon {
-        width: 20px;
-        height: 20px;
-        margin-right: 8px;
-      }
-
-      .title {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 300;
-        font-size: 10px;
-        color: #333333;
-      }
-
-      .name {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 16px;
-        color: #333333;
-      }
-    }
   }
 
   .react-p5 {
@@ -117,37 +154,37 @@
   .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 22.5px;
+    font-size: 32px;
     color: #000000;
   }
-  
+
   .statistics {
-      background-color: #EFF2F9;
-      box-shadow: 0px 4px 32px #EFF2F9;
-      border-radius: 16px;
-      width: 239px;
-      height: 522px;
-      margin-top: 16px;
-      padding: 16px;
+    background-color: #eff2f9;
+    box-shadow: 0px 4px 32px #eff2f9;
+    border-radius: 16px;
+    height: 72.5vh;
+    width: 22vw;
+    margin-top: 16px;
+    padding: 16px;
   }
 
   .statistics .performance {
-      background: #FFFFFF;
-      border-radius: 8px;
-      height: 161px;
-      // padding: 10px 12px;
-      position: relative;
-      display: flex;
-      justify-content: flex-end;
-      align-items: flex-end;
-      overflow: hidden;
+    background: #ffffff;
+    border-radius: 8px;
+    height: 200px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    overflow: hidden;
   }
 
   .performance .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
-    font-size: 16.5px;
-    color: #263238;    
+    font-size: 22px;
+    color: #263238;
     position: absolute;
     top: 10px;
     left: 12px;
@@ -156,7 +193,7 @@
   .performance .description {
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
-    font-size: 14.5px;
+    font-size: 18px;
     color: #333333;
     position: absolute;
     top: 32px;
@@ -167,16 +204,16 @@
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     font-size: 35px;
-    color: #FFAC71 !important;
+    color: #ffac71 !important;
     position: absolute;
     top: 10px;
     right: 12px;
   }
 
   .statistics .workout {
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 8px;
-    height: 163px;
+    height: 200px;
     padding: 10px 12px;
     margin-top: 12px;
   }
@@ -184,7 +221,7 @@
   .workout .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
-    font-size: 16.5px;
+    font-size: 22px;
     color: #000000;
   }
 
@@ -192,7 +229,7 @@
     margin-top: 6px;
     display: flex;
     justify-content: space-between;
-  
+
     .col-name {
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
@@ -217,133 +254,136 @@
 
   .workout .divider {
     height: 1px;
-    background-color: #DFDFDF;
+    background-color: #dfdfdf;
     margin-top: 6px;
   }
 
   .statistics .row {
-      display: flex;
-      justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
   }
 
   .statistics .active {
-      background: #FFFFFF;
-      border-radius: 8px;
-      margin-top: 12px;
-      height: 56px;
-      width: calc(50% - 16px - 8px);
-      padding: 8px;
+    background: #ffffff;
+    border-radius: 8px;
+    margin-top: 12px;
+    height: 95px;
+    width: calc(50% - 16px - 8px);
+    padding: 8px;
   }
 
   .active .title {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 600;
-      font-size: 10px;
-      color: #333333;
-      text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: #333333;
+    text-align: center;
   }
 
   .active .description {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 9px;
-      color: #333333;
-      text-align: center
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
   }
 
   .active .time {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: bold;
-      font-size: 20px;
-      margin-top: 8px;
-      background: linear-gradient(180deg, #7A4CFD 0%, #03BFFF 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-align: center
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    margin-top: 8px;
+    background: linear-gradient(180deg, #7a4cfd 0%, #03bfff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
   }
 
   .statistics .calories {
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 8px;
     margin-top: 12px;
-    height: 56px;
+    height: 95px;
     width: calc(50% - 16px - 8px);
     padding: 8px;
-}
+  }
 
   .calories .title {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
-    font-size: 10px;
+    font-size: 22px;
     color: #333333;
-    text-align: center
+    text-align: center;
   }
 
   .calories .description {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 9px;
-      color: #333333;
-      text-align: center
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
   }
 
   .calories .count {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: bold;
-      font-size: 20px;
-      margin-top: 8px;
-      background: linear-gradient(180deg, #E54851 0%, #FFA768 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-align: center
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 36px;
+    margin-top: 8px;
+    background: linear-gradient(180deg, #e54851 0%, #ffa768 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
   }
 
   .areas {
-      background: #FFFFFF;
-      border-radius: 8px;
-      margin-top: 12px;
-      height: 55px;
-      width: calc(100% - 16px);
-      padding: 8px;
+    background: #ffffff;
+    border-radius: 8px;
+    margin-top: 12px;
+    height: 95px;
+    width: calc(100% - 16px);
+    padding: 8px;
   }
 
   .areas .title {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 600;
-      font-size: 12px;
-      color: #333333;
-      text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: #333333;
+    text-align: left;
   }
 
   .areas .items {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
   }
 
   .items .item {
-      display: flex;
+    display: flex;
+
+    img {
+      height: 48px;
+    }
   }
 
   .item .rank {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 500;
-      font-size: 10px;
-      color: #333333;
-      text-align: left;
-      margin-left: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: #333333;
+    text-align: left;
+    margin-left: 4px;
   }
 
   .item .name {
-      font-family: 'Montserrat', sans-serif;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 10px;
-      color: #333333;
-      text-align: left;
-      margin-left: 4px;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333333;
+    text-align: left;
+    margin-left: 4px;
   }
-
 
   p {
     color: black !important;

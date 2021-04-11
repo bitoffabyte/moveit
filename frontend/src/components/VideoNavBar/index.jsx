@@ -1,5 +1,5 @@
 import './style.scss';
-import logo from 'assets/logo.png';
+import logo from 'assets/logo.svg';
 import { NavLink } from 'react-router-dom'
 
 //TO DO FORMAT CURRENT TIME
