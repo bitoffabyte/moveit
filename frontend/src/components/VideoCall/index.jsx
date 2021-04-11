@@ -169,6 +169,7 @@ const VideoCall = (props) => {
       props.socket.on('newExercise', data => {
         console.log('detected new exercise')
         setRemoteExercise(exercise => data);
+        console.log(data);
       })
   }, []);
 

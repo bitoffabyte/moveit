@@ -5,7 +5,7 @@ const data = require('./connections/data');
 module.exports = (server) => {
     const io = new Server(server, {
         cors: {
-            origin: '*' // enable CORS for sockets
+                origin: '*' // enable CORS for sockets
         }
     });
 
