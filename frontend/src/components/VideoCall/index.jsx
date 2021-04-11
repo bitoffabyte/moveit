@@ -25,7 +25,7 @@ const firebaseConfig = {
 
 const VideoCall = (props) => {
   const [currentExercise, setCurrentExercise] = React.useState('Resting');
-  const [remoteExercise, setRemoteExercise] = React.useState('Bussin');
+  const [remoteExercise, setRemoteExercise] = React.useState('Resting');
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
