@@ -46,11 +46,21 @@ const VideoCall = () => {
   /** WEB RTC **/
   React.useEffect(async () => {
     localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    remoteStream = new MediaStream();
 
     // Push tracks from local stream to peer connection
     localStream.getTracks().forEach((track) => {
       pc.addTrack(track, localStream);
     });
+
+    // Pull tracks from remote stream, add to video stream
+    pc.ontrack = (event) => {
+      event.streams[0].getTracks().forEach((track) => {
+        remoteStream.addTrack(track);
+      });
+    };
+
+    remoteVideo.current.srcObject = remoteStream;
 
     // Check if we should create or join a call
     firestore.collection('calls').get().then(async (querySnapshot) => {
@@ -176,9 +186,9 @@ const VideoCall = () => {
         const keypoint = pose.keypoints[j];
         // Only draw an ellipse is the pose probability is bigger than 0.2
         if (keypoint.score > minPoseConfidence) {
-          p5.fill(255, 0, 0);
+          p5.fill(255, 255, 255);
           p5.noStroke();
-          p5.ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
+          p5.ellipse(keypoint.position.x, keypoint.position.y, 15, 15);
 
           if (keypoint.part === "leftKnee" || keypoint.part === "leftHip" || keypoint.part === "rightKnee" || keypoint.part === "rightHip") {
             squatCoords[keypoint.part] = keypoint.position;
@@ -194,83 +204,8 @@ const VideoCall = () => {
         for (let j = 0; j < skeleton.length; j += 1) {
             const partA = skeleton[j][0];
             const partB = skeleton[j][1];
-            p5.stroke(255, 0, 0);
-            p5.line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
-        }
-    }
-
-    //squatDetection(squatCoords);
-  };
-
-
-  const setupRemote = (p5, canvasParentRef) => {
-		// use parent to render the canvas in this ref
-		// (without that p5 will render the canvas outside of your component)
-		p5.createCanvas(640, 480).parent(canvasParentRef);
-
-    const capture = p5.createCapture({
-        video: true,
-        audio: false
-    });
-    capture.hide();
-
-    remoteVideo.current = capture;  
-
-    remoteStream = new MediaStream();
-
-    // Pull tracks from remote stream, add to video stream
-    pc.ontrack = (event) => {
-      event.streams[0].getTracks().forEach((track) => {
-        remoteStream.addTrack(track);
-      });
-    };
-
-    remoteVideo.current.srcObject = remoteStream;
-
-    const poseNet = ml5.poseNet(remoteVideo.current, () => {
-      console.log("posenet loaded");
-    });
-
-    poseNet.on("pose", (results) => {
-      setPoses(results);
-
-      // squatDetection(results);
-    });
-	};
-
-	const drawRemote = (p5) => {
-    p5.image(remoteVideo.current, 0, 0, 640, 480)
-
-    const squatCoords = {} 
-
-    // draws keypoints
-    for (let i = 0; i < poses.length; i++) {
-      const pose = poses[i].pose; 
-
-      for (let j = 0; j < pose.keypoints.length; j += 1) {
-        // A keypoint is an object describing a body part (like rightArm or leftShoulder)
-        const keypoint = pose.keypoints[j];
-        // Only draw an ellipse is the pose probability is bigger than 0.2
-        if (keypoint.score > minPoseConfidence) {
-          p5.fill(255, 0, 0);
-          p5.noStroke();
-          p5.ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
-
-          if (keypoint.part === "leftKnee" || keypoint.part === "leftHip" || keypoint.part === "rightKnee" || keypoint.part === "rightHip") {
-            squatCoords[keypoint.part] = keypoint.position;
-          }
-        }
-      }
-    }
-
-    // draws skeleton
-    for (let i = 0; i < poses.length; i += 1) {
-        const skeleton = poses[i].skeleton;
-        // For every skeleton, loop through all body connections
-        for (let j = 0; j < skeleton.length; j += 1) {
-            const partA = skeleton[j][0];
-            const partB = skeleton[j][1];
-            p5.stroke(255, 0, 0);
+            p5.strokeWeight(5);
+            p5.stroke(255, 255, 255);
             p5.line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
         }
     }
@@ -287,7 +222,7 @@ const VideoCall = () => {
         </span>
         <span>
           <h3>Remote Stream</h3>
-          <Sketch setup={setupRemote} draw={drawRemote} />
+          <video ref={remoteVideo} autoPlay playsInline />
         </span>
       </div>
     </>
