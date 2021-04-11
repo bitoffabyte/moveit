@@ -214,7 +214,7 @@ const VideoCall = (props) => {
       })
   }, []);
 
-  const data = [
+  const performacePoints = [
     { uv: 29.28 },
     { uv: 45.62 },
     { uv: 38.36 },
@@ -233,6 +233,37 @@ const VideoCall = (props) => {
     { uv: 64.29 },
   ];
 
+  const scores = [
+    {message: 'NOT VISIBLE', value: 10},
+    {message: 'NOT VISIBLE', value: 20},
+    {message: 'Harder!', value: 31},
+    {message: 'Work on it more!', value: 73},
+    {message: 'You’re on fire!', value: 93},
+  ];
+
+  const generateScores = (chartDataScores) => {
+    console.log(chartDataScores);
+    const newChartData = chartDataScores.slice(chartDataScores.length - 3, chartDataScores.length);
+    const newScores = [];
+    let message = '';
+    for (let i = 0; i < newChartData.length; i += 1) {
+      if(newChartData[i].uv < 30) {
+        message = "That's it?";
+      } else if (newChartData[i].uv < 50) {
+        message ='Harder!';
+      } else if (newChartData[i].uv < 75) {
+        message = "That's it!";
+      } else {
+        message = "You're on fire!";
+      }
+      newScores.push({
+        message: message,
+        value: Math.floor(newChartData[i].uv)
+      })
+    }
+    return newScores;
+  }
+  
   return (
     <>
       <div className="videos">
@@ -252,12 +283,23 @@ const VideoCall = (props) => {
               <img src={Video} alt="Video" className="icon" />
             </div>
             <video ref={remoteVideo} autoPlay playsInline />
-            <div className="remote-exercise">
+            <div className={`local-exercise ${remoteExercise === "Resting" ? ' resting' : ' active'}`}>
               <p>Current Exercise</p>
               <p className="current-exercise">{remoteExercise}</p>
             </div>
           </div>
           <div className="remote-video">
+            <div className="scores">
+              {generateScores(chartData.slice(5, chartData.length)).map((score) => (
+                <div className="score">
+                  <div className="col"> 
+                    <p className="value">{score.value}</p>
+                    <p className="word">Score</p>
+                  </div>
+                  <p className="message">{score.message}</p>
+                </div>
+              ))}
+            </div>
             <div className="microphone-button">
               <img src={Microphone} alt="Microphone" className="icon" />
             </div>
@@ -265,7 +307,7 @@ const VideoCall = (props) => {
               <img src={Video} alt="Video" className="icon" />
             </div>
 
-            <div className="local-exercise">
+            <div className={`local-exercise ${currentExercise === "Resting" ? ' resting' : ' active'}`}>
               <p>Current Exercise</p>
               <p className="current-exercise">{currentExercise}</p>
             </div>
