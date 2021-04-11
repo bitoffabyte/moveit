@@ -60,7 +60,7 @@ module.exports = async (io, client) => {
         const keypoint2 = keypoints[1].keypoints;
 
         // TODO: Compare keypoints1 and keypoints2 to generate a score
-        confidenceScore = 0;
+        // confidenceScore = 0;
 
         const poseVector1 = [];
         const poseVector2 = []; 
