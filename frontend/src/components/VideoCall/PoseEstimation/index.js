@@ -4,7 +4,7 @@ import { angle, checkSquatDown, checkSquatStanding } from './utils';
 import ml5 from 'ml5';
 import Sketch from 'react-p5';
 
-const minPoseConfidence = 0.2
+const minPoseConfidence = 0.2;
 
 const PoseEstimation = () => {
     const videoRef = useRef(); 
@@ -78,9 +78,9 @@ const PoseEstimation = () => {
                 const keypoint = pose.keypoints[j];
                 // Only draw an ellipse is the pose probability is bigger than 0.2
                 if (keypoint.score > minPoseConfidence) {
-                    p5.fill(255, 0, 0);
+                    p5.fill(255, 255, 255);
                     p5.noStroke();
-                    p5.ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
+                    p5.ellipse(keypoint.position.x, keypoint.position.y, 15, 15);
 
                     if (keypoint.part === "leftKnee" || keypoint.part === "leftHip" || keypoint.part === "rightKnee" || keypoint.part === "rightHip") {
                         squatCoords[keypoint.part] = keypoint.position;
@@ -97,7 +97,8 @@ const PoseEstimation = () => {
             for (let j = 0; j < skeleton.length; j += 1) {
                 const partA = skeleton[j][0];
                 const partB = skeleton[j][1];
-                p5.stroke(255, 0, 0);
+                p5.strokeWeight(8);
+                p5.stroke(255, 255, 255);
                 p5.line(partA.position.x, partA.position.y, partB.position.x, partB.position.y);
             }
         }

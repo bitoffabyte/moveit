@@ -10,12 +10,7 @@ video {
   align-items: center;
   justify-content: center;
 
-  .info {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    p {
-      color: black !important;
-    }
+  p {
+    color: black !important;
   }
 }
