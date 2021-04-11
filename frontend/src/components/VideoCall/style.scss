@@ -1,21 +1,30 @@
-video {
-  width: 40vw;
-  height: 30vw;
-  margin: 2rem;
-  background: #2c3e50;
-}
-
 .videos {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  .info {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    p {
-      color: black !important;
+  video {
+    background: #2c3e50;
+    border-radius: 20px;
+    height: 82vh;
+    width: 33vw;
+  }
+
+  .react-p5 {
+    border-radius: 20px;
+    height: 82vh;
+    width: 33vw;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    canvas {
+      height: 100%;
     }
+  }
+
+  p {
+    color: black !important;
   }
 }
